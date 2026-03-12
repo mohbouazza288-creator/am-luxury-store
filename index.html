@@ -2,21 +2,29 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>AM Luxury Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM Luxury</title>
     <style>
         body { font-family: sans-serif; background: #0A2626; color: #fff; text-align: center; padding: 10px; }
         .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 10px auto; max-width: 350px; }
-        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
-        .controls { display: flex; justify-content: space-between; margin: 10px 0; }
-        button { cursor: pointer; padding: 8px; border-radius: 5px; border: none; background: #D4B483; }
-        input, select { width: 95%; padding: 10px; margin: 5px 0; border-radius: 5px; }
-        .cart-item { display: flex; justify-content: space-between; background: #eee; padding: 5px; margin: 5px 0; border-radius: 5px; color: #000; }
+        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; }
+        .cart-item { display: flex; justify-content: space-between; background: #fff; padding: 8px; margin: 5px 0; border-radius: 5px; color: #000; }
+        button { cursor: pointer; padding: 10px; border-radius: 5px; border: none; background: #D4B483; font-weight: bold; }
+        select, input { width: 95%; padding: 10px; margin: 5px 0; border-radius: 5px; }
     </style>
 </head>
 <body>
 
     <h1>AM Luxury</h1>
-    <div id="product-container"></div>
+    <div id="product-container">
+        <div class="product-card">
+            <h3>Polo Ralph Lauren</h3>
+            <img id="main-img" src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="product-img">
+            <p>السعر: 5900 دج</p>
+            <select id="size-select"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+            <button onclick="addToCart('Polo Ralph Lauren', 5900)" style="width:100%;">إضافة للسلة 🛒</button>
+        </div>
+    </div>
 
     <div class="product-card" style="background: #fff; color: #000;">
         <h2>🛒 سلة التسوق</h2>
@@ -26,45 +34,23 @@
         <input type="text" id="cust-phone" placeholder="رقم الهاتف">
         <select id="cust-wilaya"></select>
         <select id="delivery-type">
-            <option value="منزل">توصيل للمنزل</option>
-            <option value="مكتب">توصيل للمكتب</option>
+            <option value="توصيل للمنزل">توصيل للمنزل</option>
+            <option value="استلام من المكتب">استلام من المكتب</option>
         </select>
-        <button onclick="sendOrder()" style="width:100%; background:green; color:white; font-size:1.2em;">تأكيد الطلب</button>
+        <button onclick="sendOrder()" style="width:100%; background:green; color:white;">تأكيد الطلب</button>
     </div>
 
     <script>
-        const wilayas = ["ادرار", "الشلف", "الاغواط", "ام البواقي", "باتنة", "بجاية", "بسكرة", "بشار", "البليدة", "البويرة", "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر", "الجلفة", "جيجل", "سطيف", "سعيدة", "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة", "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة", "وهران", "البيض", "اليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تيسمسيلت", "الوادي", "خنشلة", "سوق اهراس", "تيبازة", "ميلة", "عين الدفلى", "النعامة", "عين تموشنت", "غرداية", "غليزان"];
+        const wilayas = ["01 أدرار", "02 الشلف", "03 الأغواط", "04 أم البواقي", "05 باتنة", "06 بجاية", "07 بسكرة", "08 بشار", "09 البليدة", "10 البويرة", "11 تمنراست", "12 تبسة", "13 تلمسان", "14 تيارت", "15 تيزي وزو", "16 الجزائر", "17 الجلفة", "18 جيجل", "19 سطيف", "20 سعيدة", "21 سكيكدة", "22 سيدي بلعباس", "23 عنابة", "24 قالمة", "25 قسنطينة", "26 المدية", "27 مستغانم", "28 المسيلة", "29 معسكر", "30 ورقلة", "31 وهران", "32 البيض", "33 إليزي", "34 برج بوعريريج", "35 بومرداس", "36 الطارف", "37 تندوف", "38 تيسمسيلت", "39 الوادي", "40 خنشلة", "41 سوق أهراس", "42 تيبازة", "43 ميلة", "44 عين الدفلى", "45 النعامة", "46 عين تموشنت", "47 غرداية", "48 غليزان"];
         const select = document.getElementById("cust-wilaya");
         wilayas.forEach(w => select.innerHTML += `<option value="${w}">${w}</option>`);
 
         let cart = [];
-        // مثال لمنتج (يمكنك جلب البيانات من API)
-        const product = { name: "Polo Ralph Lauren", price: 5900, imgs: ["img1.jpg", "img2.jpg"], curr: 0 };
 
-        function renderProduct() {
-            document.getElementById("product-container").innerHTML = `
-                <div class="product-card">
-                    <h3>${product.name}</h3>
-                    <img id="main-img" src="${product.imgs[product.curr]}" class="product-img">
-                    <div class="controls">
-                        <button onclick="changeImg(-1)">السابق</button>
-                        <button onclick="changeImg(1)">التالي</button>
-                    </div>
-                    <select id="size-select"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
-                    <p>السعر: ${product.price} دج</p>
-                    <button onclick="addToCart()">إضافة للسلة</button>
-                </div>`;
-        }
-
-        function changeImg(dir) {
-            product.curr = (product.curr + dir + product.imgs.length) % product.imgs.length;
-            renderProduct();
-        }
-
-        function addToCart() {
+        function addToCart(name, price) {
             const size = document.getElementById("size-select").value;
-            cart.push({...product, size});
-            alert("تمت الإضافة للسلة!");
+            cart.push({name, price, size});
+            alert("✅ تمت الإضافة للسلة!");
             renderCart();
         }
 
@@ -73,7 +59,7 @@
             let total = 0;
             container.innerHTML = cart.map((item, i) => {
                 total += item.price;
-                return `<div class="cart-item">${item.name} (${item.size}) - ${item.price} دج <button onclick="cart.splice(${i},1); renderCart()">❌</button></div>`;
+                return `<div class="cart-item">${item.name} (${item.size}) - ${item.price} دج <button onclick="cart.splice(${i},1); renderCart()" style="background:none; color:red;">❌</button></div>`;
             }).join('');
             document.getElementById("total-price").innerText = "المجموع: " + total + " دج";
         }
@@ -83,8 +69,6 @@
             alert("شكراً لثقتك بنا! سنتصل بك قريباً لتأكيد طلبك.");
             cart = []; renderCart();
         }
-
-        renderProduct();
     </script>
 </body>
 </html>
