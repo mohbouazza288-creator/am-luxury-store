@@ -84,21 +84,25 @@
         }
 
                 function renderCart() {
-            const cartDiv = document.getElementById("cart-items");
-            const total = cart.reduce((sum, item) => sum + parseInt(item.price), 0);
-            
-            cartDiv.innerHTML = cart.map((item, index) => `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:white; padding:5px; border-radius:5px;">
-                    <span>${item.name} (${item.size}) - ${item.price} دج</span>
-                    <button onclick="removeFromCart(${index})" style="color:red; border:none; background:none; font-weight:bold; cursor:pointer;">❌</button>
-                </div>
-            `).join('');
-            
-            if(cart.length > 0) {
-                cartDiv.innerHTML += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
-            } else {
-                cartDiv.innerHTML = "<p>السلة فارغة</p>";
-            }
+    const cartDiv = document.getElementById("cart-items");
+    const total = cart.reduce((sum, item) => sum + parseInt(item.price), 0);
+    
+    let html = "";
+    cart.forEach((item, index) => {
+        html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:white; padding:5px; border-radius:5px;">
+            <span>${item.name} (${item.size}) - ${item.price} دج</span>
+            <button onclick="removeFromCart(${index})" style="color:red; border:none; background:none; font-weight:bold; cursor:pointer;">❌</button>
+        </div>`;
+    });
+
+    if(cart.length > 0) {
+        html += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
+    } else {
+        html = "<p>السلة فارغة</p>";
+    }
+    cartDiv.innerHTML = html;
+                }
+        
         }
 
         function removeFromCart(index) {
