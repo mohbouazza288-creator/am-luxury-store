@@ -1,0 +1,109 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0A2626; /* الأخضر الغامق */
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.logo { width: 200px; margin-bottom: 20px; }
+
+#product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+}
+
+/* بطاقة المنتج (البيج الذهبي) */
+.product-card {
+    background-color: #F5E6CC; /* لون البيج الفخم */
+    color: #0A2626;
+    padding: 20px;
+    border-radius: 20px;
+    width: 280px;
+    border: 1px solid #D4B483; /* إطار ذهبي */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.slider img {
+    border-radius: 10px;
+    border: 2px solid #D4B483;
+}
+
+.slider button {
+    background-color: #0A2626;
+    color: #F5E6CC;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* تنبيه النجاح (ذهبي فخم) */
+.success-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0A2626;
+    color: #D4B483;
+    padding: 30px;
+    border: 2px solid #D4B483;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 2000;
+    box-shadow: 0 0 30px rgba(212, 180, 131, 0.4);
+}
+
+
+/* تنسيق بطاقة المنتج (البيج الذهبي) */
+.product-card {
+    background-color: #F5E6CC;
+    color: #0A2626;
+    padding: 15px;
+    border-radius: 15px;
+    width: 250px;
+    border: 1px solid #D4B483;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* تنسيق الصورة والأزرار */
+.slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.slider img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.slider button {
+    background-color: #0A2626;
+    color: #F5E6CC;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+
