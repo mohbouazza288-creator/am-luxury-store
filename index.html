@@ -2,75 +2,89 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AM Luxury</title>
+    <title>AM Luxury Store</title>
     <style>
-        body { font-family: sans-serif; background-color: #0A2626; color: #fff; text-align: center; padding: 20px; }
-        .header-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #D4B483; }
-        .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
-        .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
-        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 300px; border: 2px solid #D4B483; }
-        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
-        .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
-        input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
-        .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
+        body { font-family: sans-serif; background: #0A2626; color: #fff; text-align: center; padding: 10px; }
+        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 10px auto; max-width: 350px; }
+        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
+        .controls { display: flex; justify-content: space-between; margin: 10px 0; }
+        button { cursor: pointer; padding: 8px; border-radius: 5px; border: none; background: #D4B483; }
+        input, select { width: 95%; padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .cart-item { display: flex; justify-content: space-between; background: #eee; padding: 5px; margin: 5px 0; border-radius: 5px; color: #000; }
     </style>
 </head>
 <body>
 
-    <div class="header-section">
-        <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" alt="Logo" class="store-logo">
-        <h1 class="store-name">AM Luxury</h1>
-    </div>
-
+    <h1>AM Luxury</h1>
     <div id="product-container"></div>
 
-    <section class="cart-section">
-        <h2 style="text-align: center;">🛒 سلة التسوق</h2>
+    <div class="product-card" style="background: #fff; color: #000;">
+        <h2>🛒 سلة التسوق</h2>
         <div id="cart-items"></div>
-        <hr>
+        <h3 id="total-price">المجموع: 0 دج</h3>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
         <input type="text" id="cust-phone" placeholder="رقم الهاتف">
-        <select id="cust-wilaya"><option value="">اختر الولاية...</option></select>
-        <button onclick="sendOrder()" class="add-btn" style="background:#0A2626; color:#D4B483;">إتمام الطلب</button>
-    </section>
+        <select id="cust-wilaya"></select>
+        <select id="delivery-type">
+            <option value="منزل">توصيل للمنزل</option>
+            <option value="مكتب">توصيل للمكتب</option>
+        </select>
+        <button onclick="sendOrder()" style="width:100%; background:green; color:white; font-size:1.2em;">تأكيد الطلب</button>
+    </div>
 
     <script>
-        const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/feuilleDeCalculSansTitre/feuille1";
-        const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
-        const CHAT_ID = "8332065634";
+        const wilayas = ["ادرار", "الشلف", "الاغواط", "ام البواقي", "باتنة", "بجاية", "بسكرة", "بشار", "البليدة", "البويرة", "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر", "الجلفة", "جيجل", "سطيف", "سعيدة", "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة", "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة", "وهران", "البيض", "اليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تيسمسيلت", "الوادي", "خنشلة", "سوق اهراس", "تيبازة", "ميلة", "عين الدفلى", "النعامة", "عين تموشنت", "غرداية", "غليزان"];
+        const select = document.getElementById("cust-wilaya");
+        wilayas.forEach(w => select.innerHTML += `<option value="${w}">${w}</option>`);
+
         let cart = [];
+        // مثال لمنتج (يمكنك جلب البيانات من API)
+        const product = { name: "Polo Ralph Lauren", price: 5900, imgs: ["img1.jpg", "img2.jpg"], curr: 0 };
 
-        fetch(API_SHEETY).then(r => r.json()).then(data => {
-            const container = document.getElementById("product-container");
-            data.feuille1.forEach((p, i) => {
-                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3><img src="${p.image1}" class="product-img"><p>السعر: ${p.price} دج</p><button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">إضافة للسلة</button></div>`;
-            });
-        });
+        function renderProduct() {
+            document.getElementById("product-container").innerHTML = `
+                <div class="product-card">
+                    <h3>${product.name}</h3>
+                    <img id="main-img" src="${product.imgs[product.curr]}" class="product-img">
+                    <div class="controls">
+                        <button onclick="changeImg(-1)">السابق</button>
+                        <button onclick="changeImg(1)">التالي</button>
+                    </div>
+                    <select id="size-select"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+                    <p>السعر: ${product.price} دج</p>
+                    <button onclick="addToCart()">إضافة للسلة</button>
+                </div>`;
+        }
 
-        function addToCart(name, price) {
-            cart.push({name, price});
+        function changeImg(dir) {
+            product.curr = (product.curr + dir + product.imgs.length) % product.imgs.length;
+            renderProduct();
+        }
+
+        function addToCart() {
+            const size = document.getElementById("size-select").value;
+            cart.push({...product, size});
+            alert("تمت الإضافة للسلة!");
             renderCart();
         }
 
         function renderCart() {
-            const cartDiv = document.getElementById("cart-items");
-            cartDiv.innerHTML = cart.map((item, index) => `
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span>${item.name} - ${item.price} دج</span>
-                    <button onclick="cart.splice(${index},1); renderCart()" style="color:red;">❌</button>
-                </div>
-            `).join('');
+            const container = document.getElementById("cart-items");
+            let total = 0;
+            container.innerHTML = cart.map((item, i) => {
+                total += item.price;
+                return `<div class="cart-item">${item.name} (${item.size}) - ${item.price} دج <button onclick="cart.splice(${i},1); renderCart()">❌</button></div>`;
+            }).join('');
+            document.getElementById("total-price").innerText = "المجموع: " + total + " دج";
         }
 
         function sendOrder() {
-            const n = document.getElementById("cust-name").value;
-            const p = document.getElementById("cust-phone").value;
-            if(!n || !p || cart.length == 0) return alert("يرجى ملء البيانات!");
-            const msg = `طلب جديد: %0A الاسم: ${n} %0A الهاتف: ${p} %0A المنتجات: ${cart.map(i => i.name).join(',')}`;
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}`);
-            alert("تم الطلب!");
+            if(cart.length === 0) return alert("السلة فارغة!");
+            alert("شكراً لثقتك بنا! سنتصل بك قريباً لتأكيد طلبك.");
+            cart = []; renderCart();
         }
+
+        renderProduct();
     </script>
 </body>
 </html>
