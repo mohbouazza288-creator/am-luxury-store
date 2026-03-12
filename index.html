@@ -83,11 +83,29 @@
             showNotification("تمت الإضافة للسلة!");
         }
 
-        function renderCart() {
+                function renderCart() {
             const cartDiv = document.getElementById("cart-items");
             const total = cart.reduce((sum, item) => sum + parseInt(item.price), 0);
-            cartDiv.innerHTML = cart.map(i => `<p>${i.name} (${i.size}) - ${i.price} دج</p>`).join('');
-            if(cart.length > 0) cartDiv.innerHTML += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
+            
+            cartDiv.innerHTML = cart.map((item, index) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:white; padding:5px; border-radius:5px;">
+                    <span>${item.name} (${item.size}) - ${item.price} دج</span>
+                    <button onclick="removeFromCart(${index})" style="color:red; border:none; background:none; font-weight:bold; cursor:pointer;">❌</button>
+                </div>
+            `).join('');
+            
+            if(cart.length > 0) {
+                cartDiv.innerHTML += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
+            } else {
+                cartDiv.innerHTML = "<p>السلة فارغة</p>";
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+        
         }
 
         function sendOrder() {
