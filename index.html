@@ -2,72 +2,109 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AM Luxury</title>
     <style>
-        body { font-family: sans-serif; background: #0A2626; color: #fff; text-align: center; padding: 10px; }
-        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 10px auto; max-width: 350px; }
-        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; }
-        .cart-item { display: flex; justify-content: space-between; background: #fff; padding: 8px; margin: 5px 0; border-radius: 5px; color: #000; }
-        button { cursor: pointer; padding: 10px; border-radius: 5px; border: none; background: #D4B483; font-weight: bold; }
-        select, input { width: 95%; padding: 10px; margin: 5px 0; border-radius: 5px; }
+        body { font-family: sans-serif; background-color: #0A2626; color: #fff; text-align: center; padding: 20px; }
+        .header-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #D4B483; }
+        .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
+        .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
+        .slogan { font-size: 1.2em; font-style: italic; color: #555; margin-bottom: 20px; }
+        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 300px; border: 2px solid #D4B483; }
+        .slider-container { position: relative; width: 100%; margin-bottom: 10px; }
+        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; }
+        .nav-btn { background: rgba(0,0,0,0.5); color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px; margin: 0 5px; }
+        .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
+        input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
+        .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <h1>AM Luxury</h1>
-    <div id="product-container">
-        <div class="product-card">
-            <h3>Polo Ralph Lauren</h3>
-            <img id="main-img" src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="product-img">
-            <p>السعر: 5900 دج</p>
-            <select id="size-select"><option>S</option><option>M</option><option>L</option><option>XL</option></select>
-            <button onclick="addToCart('Polo Ralph Lauren', 5900)" style="width:100%;">إضافة للسلة 🛒</button>
-        </div>
+    <div class="header-section">
+        <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" alt="AM Luxury Logo" class="store-logo">
+        <h1 class="store-name">AM Luxury</h1>
+        <p class="slogan">Classic and Casual for Your Style</p>
     </div>
 
-    <div class="product-card" style="background: #fff; color: #000;">
-        <h2>🛒 سلة التسوق</h2>
+    <div id="product-container"></div>
+
+    <section class="cart-section">
+        <h2 style="text-align: center;">🛒 سلة التسوق</h2>
         <div id="cart-items"></div>
-        <h3 id="total-price">المجموع: 0 دج</h3>
+        <hr>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
         <input type="text" id="cust-phone" placeholder="رقم الهاتف">
-        <select id="cust-wilaya"></select>
-        <select id="delivery-type">
-            <option value="توصيل للمنزل">توصيل للمنزل</option>
+        <select id="cust-wilaya"><option value="">اختر الولاية...</option></select>
+        <select id="cust-delivery" onchange="document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
+            <option value="توصيل للمنزل">توصيل للمنزل</option>
         </select>
-        <button onclick="sendOrder()" style="width:100%; background:green; color:white;">تأكيد الطلب</button>
-    </div>
+        <input type="text" id="address-box" placeholder="العنوان بالتفصيل" style="display:none;">
+        <button onclick="sendOrder()" class="add-btn" style="background:#0A2626; color:#D4B483;">إتمام الطلب</button>
+    </section>
 
     <script>
-        const wilayas = ["01 أدرار", "02 الشلف", "03 الأغواط", "04 أم البواقي", "05 باتنة", "06 بجاية", "07 بسكرة", "08 بشار", "09 البليدة", "10 البويرة", "11 تمنراست", "12 تبسة", "13 تلمسان", "14 تيارت", "15 تيزي وزو", "16 الجزائر", "17 الجلفة", "18 جيجل", "19 سطيف", "20 سعيدة", "21 سكيكدة", "22 سيدي بلعباس", "23 عنابة", "24 قالمة", "25 قسنطينة", "26 المدية", "27 مستغانم", "28 المسيلة", "29 معسكر", "30 ورقلة", "31 وهران", "32 البيض", "33 إليزي", "34 برج بوعريريج", "35 بومرداس", "36 الطارف", "37 تندوف", "38 تيسمسيلت", "39 الوادي", "40 خنشلة", "41 سوق أهراس", "42 تيبازة", "43 ميلة", "44 عين الدفلى", "45 النعامة", "46 عين تموشنت", "47 غرداية", "48 غليزان"];
-        const select = document.getElementById("cust-wilaya");
-        wilayas.forEach(w => select.innerHTML += `<option value="${w}">${w}</option>`);
-
+        const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/feuilleDeCalculSansTitre/feuille1";
+        const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
+        const CHAT_ID = "8332065634";
         let cart = [];
 
-        function addToCart(name, price) {
-            const size = document.getElementById("size-select").value;
-            cart.push({name, price, size});
-            alert("✅ تمت الإضافة للسلة!");
+        function showNotification(msg) {
+            const div = document.createElement("div");
+            div.style.cssText = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#D4B483; color:#0A2626; padding:15px; border-radius:10px; z-index:9999; font-weight:bold; box-shadow:0 0 10px rgba(0,0,0,0.5);";
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
+
+        const wilayas = ["01 أدرار", "02 الشلف", "03 الأغواط", "04 أم البواقي", "05 باتنة", "06 بجاية", "07 بسكرة", "08 بشار", "09 البليدة", "10 البويرة", "11 تمنراست", "12 تبسة", "13 تلمسان", "14 تيارت", "15 تيزي وزو", "16 الجزائر", "17 الجلفة", "18 جيجل", "19 سطيف", "20 سعيدة", "21 سكيكدة", "22 سيدي بلعباس", "23 عنابة", "24 قالمة", "25 قسنطينة", "26 المدية", "27 مستغانم", "28 المسيلة", "29 معسكر", "30 ورقلة", "31 وهران", "32 البيض", "33 إليزي", "34 برج بوعريريج", "35 بومرداس", "36 الطارف", "37 تندوف", "38 تيسمسيلت", "39 الوادي", "40 خنشلة", "41 سوق أهراس", "42 تيبازة", "43 ميلة", "44 عين الدفلى", "45 النعامة", "46 عين تموشنت", "47 غرداية", "48 غليزان", "49 أولاد جلال", "50 بني عباس", "51 إن صالح", "52 إن قزام", "53 تقرت", "54 جانت", "55 المغير", "56 المنيعة", "57 أولاد جلال", "58 برج باجي مختار"];
+        const wSelect = document.getElementById("cust-wilaya");
+        wilayas.forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
+
+        fetch(API_SHEETY).then(r => r.json()).then(data => {
+            const container = document.getElementById("product-container");
+            data.feuille1.forEach((p, i) => {
+                const imgs = [p.image1, p.image2, p.image3, p.image4, p.image5].filter(img => img);
+                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3><div class="slider-container"><img id="img-${i}" src="${imgs[0]}" data-imgs='${JSON.stringify(imgs)}' data-curr="0" class="product-img"><br><button class="nav-btn" onclick="changeImg(${i}, -1)">❮</button> <button class="nav-btn" onclick="changeImg(${i}, 1)">❯</button></div><p>السعر: ${p.price} دج</p><select id="size-${i}"><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, 'size-${i}')">إضافة للسلة</button></div>`;
+            });
+        });
+
+        function changeImg(i, dir) {
+            const img = document.getElementById(`img-${i}`);
+            const list = JSON.parse(img.dataset.imgs);
+            let cur = (parseInt(img.dataset.curr) + dir + list.length) % list.length;
+            img.src = list[cur]; img.dataset.curr = cur;
+        }
+
+        function addToCart(name, price, sId) {
+            cart.push({name, price, size: document.getElementById(sId).value});
             renderCart();
+            showNotification("تمت الإضافة للسلة!");
         }
 
         function renderCart() {
-            const container = document.getElementById("cart-items");
-            let total = 0;
-            container.innerHTML = cart.map((item, i) => {
-                total += item.price;
-                return `<div class="cart-item">${item.name} (${item.size}) - ${item.price} دج <button onclick="cart.splice(${i},1); renderCart()" style="background:none; color:red;">❌</button></div>`;
-            }).join('');
-            document.getElementById("total-price").innerText = "المجموع: " + total + " دج";
+            const cartDiv = document.getElementById("cart-items");
+            const total = cart.reduce((sum, item) => sum + parseInt(item.price), 0);
+            cartDiv.innerHTML = cart.map(i => `<p>${i.name} (${i.size}) - ${i.price} دج</p>`).join('');
+            if(cart.length > 0) cartDiv.innerHTML += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
         }
 
         function sendOrder() {
-            if(cart.length === 0) return alert("السلة فارغة!");
-            alert("شكراً لثقتك بنا! سنتصل بك قريباً لتأكيد طلبك.");
-            cart = []; renderCart();
+            const n = document.getElementById("cust-name").value;
+            const p = document.getElementById("cust-phone").value;
+            const w = document.getElementById("cust-wilaya").value;
+            const d = document.getElementById("cust-delivery").value;
+            const addr = document.getElementById("address-box").value;
+            if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال جميع البيانات!");
+            const total = cart.reduce((s, i) => s + parseInt(i.price), 0);
+            const productsList = cart.map(i => `\n- ${i.name} (${i.size}) : ${i.price} دج`).join('');
+            const msg = `🛍 *طلب جديد من AM Luxury*%0A%0A👤 *الاسم:* ${n}%0A📱 *الهاتف:* ${p}%0A📍 *الولاية:* ${w}%0A🚚 *التوصيل:* ${d}%0A` + (addr ? `🏡 *العنوان:* ${addr}%0A` : ``) + `%0A📦 *المنتجات:* ${productsList}%0A%0A💰 *المجموع الإجمالي:* ${total} دج`;
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`)
+            .then(() => {
+                showNotification("شكراً لثقتكم، سنتواصل معكم في أقرب وقت!");
+                cart = []; renderCart();
+                document.getElementById("cust-name").value = ""; document.getElementById("cust-phone").value = ""; document.getElementById("address-box").value = "";
+            });
         }
     </script>
 </body>
