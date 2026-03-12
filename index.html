@@ -67,7 +67,7 @@
             const container = document.getElementById("product-container");
             data.feuille1.forEach((p, i) => {
                 const imgs = [p.image1, p.image2, p.image3, p.image4, p.image5].filter(img => img);
-                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3><div class="slider-container"><img id="img-${i}" src="${imgs[0]}" data-imgs='${JSON.stringify(imgs)}' data-curr="0" class="product-img"><br><button class="nav-btn" onclick="changeImg(${i}, -1)">❮</button> <button class="nav-btn" onclick="changeImg(${i}, 1)">❯</button></div><p>السعر: ${p.price} دج</p><select id="size-${i}"><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, 'size-${i}')">إضافة للسلة</button></div>`;
+                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3><div class="slider-container"><a href="${imgs[0]}" target="_blank"><img id="img-${i}" src="${imgs[0]}" data-imgs='${JSON.stringify(imgs)}' data-curr="0" class="product-img"></a><br><button class="nav-btn" onclick="changeImg(${i}, -1)">❮</button> <button class="nav-btn" onclick="changeImg(${i}, 1)">❯</button></div><p>السعر: ${p.price} دج</p><select id="size-${i}"><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, 'size-${i}')">إضافة للسلة</button></div>`;
             });
         });
 
@@ -76,6 +76,7 @@
             const list = JSON.parse(img.dataset.imgs);
             let cur = (parseInt(img.dataset.curr) + dir + list.length) % list.length;
             img.src = list[cur]; img.dataset.curr = cur;
+            img.parentElement.href = list[cur];
         }
 
         function addToCart(name, price, sId) {
