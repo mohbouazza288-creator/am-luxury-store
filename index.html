@@ -10,7 +10,7 @@
         .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
         .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
         .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 300px; border: 2px solid #D4B483; }
-        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; }
+        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; margin-top: 5px; }
         .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
         input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
         .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
@@ -23,7 +23,7 @@
 
     <div id="custom-alert">
         <p style="font-size: 1.3em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
-        <p style="margin: 0;">تم استلام طلبك بنجاح، سيتواصل معك فريقنا قريباً.</p>
+        <p>تم استلام طلبك بنجاح!</p>
     </div>
 
     <div class="header-section">
@@ -31,7 +31,7 @@
         <h1 class="store-name">AM Luxury</h1>
     </div>
 
-    <div id="product-container"><p>جاري تحميل المنتجات...</p></div>
+    <div id="product-container"></div>
 
     <section class="cart-section">
         <h2 style="text-align: center;">🛒 سلة التسوق</h2>
@@ -50,34 +50,35 @@
     </section>
 
     <script>
-        const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/feuilleDeCalculSansTitre/feuille1";
+        const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/amLuxuryyyProdact/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
         let cart = [];
         let selectedSizes = {};
+        
         const rates = { "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500] };
 
         const wSelect = document.getElementById("cust-wilaya");
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
-        // التعديل هنا: جلب البيانات من الأعمدة الجديدة
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
-            container.innerHTML = '';
             const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            
-            // data.feuille1 هو المسار الذي يجلبه Sheety عادة
             data.feuille1.forEach((p, i) => {
                 const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
                 selectedSizes[i] = available[0];
                 
+                let imagesHtml = `<img src="${p.image1}" class="product-img">`;
+                if(p.image2) imagesHtml += `<img src="${p.image2}" class="product-img">`;
+                if(p.image3) imagesHtml += `<img src="${p.image3}" class="product-img">`;
+                if(p.image4) imagesHtml += `<img src="${p.image4}" class="product-img">`;
+
                 container.innerHTML += `<div class="product-card"><h3>${p.name}</h3>
-                    <img src="${p.image1}" class="product-img"><p>السعر: ${p.price} دج</p>
+                    ${imagesHtml}
+                    <p>السعر: ${p.price} دج</p>
                     <div id="size-btns-${i}">${allSizes.map(s => available.includes(s) ? `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : `<button class="btn-size" disabled style="opacity:0.3; text-decoration:line-through">${s}</button>`).join('')}</div>
                     <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة</button></div>`;
             });
-        }).catch(e => {
-            document.getElementById("product-container").innerHTML = "<p>تعذر تحميل المنتجات، يرجى عمل Sync في موقع Sheety.</p>";
         });
 
         function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
@@ -97,7 +98,7 @@
             const wilaya = document.getElementById('cust-wilaya').value;
             const delivery = document.getElementById('cust-delivery').value;
             const address = document.getElementById('address-box').value;
-            if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء جميع البيانات واختيار منتجات!"); return; }
+            if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء جميع البيانات!"); return; }
             let msg = `🛍 طلب جديد من ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A`;
             if(address) msg += `🏡 العنوان: ${address}%0A`;
             msg += `%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size}) : ${i.price} دج`).join('%0A');
@@ -105,9 +106,10 @@
             .then(() => {
                 document.getElementById('custom-alert').style.display = 'block';
                 setTimeout(() => { document.getElementById('custom-alert').style.display = 'none'; }, 5000);
-                cart = []; renderCart(); document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('address-box').value = ''; document.getElementById('address-box').style.display = 'none'; document.getElementById('cust-delivery').value = 'استلام من المكتب';
+                cart = []; renderCart(); document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('cust-wilaya').value = ''; document.getElementById('cust-delivery').value = 'استلام من المكتب'; document.getElementById('address-box').value = ''; document.getElementById('address-box').style.display = 'none';
             });
         }
     </script>
 </body>
 </html>
+    
