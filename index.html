@@ -62,7 +62,9 @@
         <div id="cart-items"></div>
         <div id="cart-total" style="margin: 20px 0; font-weight: bold; border-top: 1px solid var(--gold); padding-top: 10px;"></div>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
-        <input type="tel" id="cust-phone" placeholder="رقم الهاتف">
+        
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        
         <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
         <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
@@ -84,7 +86,7 @@
     </div>
 
     <div class="wrapper">
-        <div id="product-container">jari t">جاري تحميل المنتجات...</div>
+        <div id="product-container">جاري تحميل المنتجات...</div>
 
         <div class="footer-info">
             <div class="social-links">
@@ -94,7 +96,7 @@
             </div>
             
             <div class="shipping-note">
-                <p>🚛 نحن نعمل مع شركة <strong>Nord Express</strong> لضمان وصول طلباتكم بسرعة.</p>
+                <p>🚛 نحن نعمل مع شركة <strong>Noest Express</strong> لضمان وصول طلباتكم بسرعة.</p>
                 <p>التوصيل متوفر لـ <strong>58 ولاية</strong> | الدفع عند الاستلام ✅</p>
                 <p>سرعة في التوصيل: <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
             </div>
@@ -169,7 +171,11 @@
             const wilaya = document.getElementById('cust-wilaya').value;
             const delivery = document.getElementById('cust-delivery').value;
             const address = document.getElementById('address-box').value;
+            
+            // التحقق من طول الرقم عند التأكيد
             if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء البيانات وإضافة منتجات!"); return; }
+            if (phone.length < 10) { alert("يرجى إدخال رقم هاتف صحيح (10 أرقام)!"); return; }
+
             let msg = `🛍 طلب جديد من ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A🏡 العنوان: ${address}%0A%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size})`).join('%0A');
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}`);
             document.getElementById('custom-alert').style.display = 'block';
