@@ -75,9 +75,21 @@
 
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
+            const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
             data.feuille1.forEach((p, i) => {
                 const imgs = [p.image1, p.image2, p.image3, p.image4, p.image5].filter(img => img);
-                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3><div class="slider-container"><a href="${imgs[0]}" target="_blank"><img id="img-${i}" src="${imgs[0]}" data-imgs='${JSON.stringify(imgs)}' data-curr="0" class="product-img"></a><br><button class="nav-btn" onclick="changeImg(${i}, -1)">❮</button> <button class="nav-btn" onclick="changeImg(${i}, 1)">❯</button></div><p>السعر: ${p.price} دج</p><select id="size-${i}"><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, 'size-${i}')">إضافة للسلة</button></div>`;
+                const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
+                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3>
+                    <div class="slider-container"><a href="${imgs[0]}" target="_blank"><img id="img-${i}" src="${imgs[0]}" data-imgs='${JSON.stringify(imgs)}' data-curr="0" class="product-img"></a>
+                    <div style="margin-top:10px;"><button class="nav-btn" onclick="changeImg(${i}, -1)">❮</button> <button class="nav-btn" onclick="changeImg(${i}, 1)">❯</button></div></div>
+                    <p>السعر: ${p.price} دج</p>
+                    <div style="margin:10px 0;">${allSizes.map(s => {
+                        const isAvailable = available.includes(s);
+                        return isAvailable ? `<button onclick="document.getElementById('size-${i}').value='${s}'; this.parentElement.querySelectorAll('.btn-s').forEach(b=>b.style.background='#D4B483'); this.style.background='#0A2626'; this.style.color='#D4B483';" class="btn-s" style="margin:2px; border:none; padding:5px 10px; cursor:pointer; background:#D4B483; border-radius:5px; color:#0A2626;">${s}</button>`
+                        : `<button disabled style="margin:2px; border:none; padding:5px 10px; background:#ccc; border-radius:5px; text-decoration:line-through; color:#666;">${s}</button>`;
+                    }).join('')}
+                    <input type="hidden" id="size-${i}" value="${available[0] || 'S'}"></div>
+                    <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, 'size-${i}')">إضافة للسلة</button></div>`;
             });
         });
 
@@ -100,13 +112,11 @@
             const d = document.getElementById("cust-delivery").value;
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            
             document.getElementById("cart-items").innerHTML = cart.map((i, index) => 
                 `<div style="display:flex; justify-content:space-between; align-items:center; margin:5px 0; background:rgba(255,255,255,0.1); padding:5px; border-radius:5px;">
                     <span>${i.name} (${i.size}) - ${i.price} دج</span>
                     <button onclick="removeFromCart(${index})" style="background:#cc0000; color:white; border:none; border-radius:3px; padding:2px 8px; cursor:pointer;">X</button>
-                </div>`
-            ).join('') + (cart.length > 0 ? `<hr><strong>المجموع الفرعي: ${sub} دج</strong><br><strong>سعر التوصيل: ${ship} دج</strong><br><strong style="font-size:1.2em; color:#D4B483;">المجموع الكلي: ${sub + ship} دج</strong>` : '');
+                </div>`).join('') + (cart.length > 0 ? `<hr><strong>المجموع الفرعي: ${sub} دج</strong><br><strong>سعر التوصيل: ${ship} دج</strong><br><strong style="font-size:1.2em; color:#D4B483;">المجموع الكلي: ${sub + ship} دج</strong>` : '');
         }
 
         function removeFromCart(index) {
@@ -120,11 +130,9 @@
             const w = document.getElementById("cust-wilaya").value;
             const d = document.getElementById("cust-delivery").value;
             const addr = document.getElementById("address-box").value;
-            
             const phoneRegex = /^0[5-7][0-9]{8}$/;
             if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال البيانات!");
             if(!phoneRegex.test(p)) return showNotification("يرجى إدخال رقم هاتف جزائري صحيح (10 أرقام)!");
-
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = rates[w] ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
             const msg = `🛍 *طلب جديد من AM Luxury*%0A%0A👤 *الاسم:* ${n}%0A📱 *الهاتف:* ${p}%0A📍 *الولاية:* ${w}%0A🚚 *التوصيل:* ${d}%0A` + (addr ? `🏡 *العنوان:* ${addr}%0A` : ``) + `%0A💰 *المجموع:* ${sub + ship} دج`;
@@ -138,5 +146,4 @@
         }
    </script>
 </body>
-            </html>
-            
+</html>
