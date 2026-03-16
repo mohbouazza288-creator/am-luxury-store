@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta charset="UTF-8">
     <title>AM Luxury</title>
     <style>
@@ -36,8 +35,8 @@
         <hr>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
         <input type="text" id="cust-phone" placeholder="رقم الهاتف">
-        <select id="cust-wilaya"><option value="">اختر الولاية...</option></select>
-        <select id="cust-delivery" onchange="document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
+        <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
+        <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
             <option value="توصيل للمنزل">توصيل للمنزل</option>
         </select>
@@ -51,6 +50,12 @@
         const CHAT_ID = "8332065634";
         let cart = [];
 
+        // خريطة أسعار التوصيل [منزل، مكتب]
+        const rates = { "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500] };
+
+        const wSelect = document.getElementById("cust-wilaya");
+        Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
+
         function showNotification(msg) {
             const div = document.createElement("div");
             div.style.cssText = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#D4B483; color:#0A2626; padding:15px; border-radius:10px; z-index:9999; font-weight:bold; box-shadow:0 0 10px rgba(0,0,0,0.5);";
@@ -58,10 +63,6 @@
             document.body.appendChild(div);
             setTimeout(() => div.remove(), 3000);
         }
-
-        const wilayas = ["01 أدرار", "02 الشلف", "03 الأغواط", "04 أم البواقي", "05 باتنة", "06 بجاية", "07 بسكرة", "08 بشار", "09 البليدة", "10 البويرة", "11 تمنراست", "12 تبسة", "13 تلمسان", "14 تيارت", "15 تيزي وزو", "16 الجزائر", "17 الجلفة", "18 جيجل", "19 سطيف", "20 سعيدة", "21 سكيكدة", "22 سيدي بلعباس", "23 عنابة", "24 قالمة", "25 قسنطينة", "26 المدية", "27 مستغانم", "28 المسيلة", "29 معسكر", "30 ورقلة", "31 وهران", "32 البيض", "33 إليزي", "34 برج بوعريريج", "35 بومرداس", "36 الطارف", "37 تندوف", "38 تيسمسيلت", "39 الوادي", "40 خنشلة", "41 سوق أهراس", "42 تيبازة", "43 ميلة", "44 عين الدفلى", "45 النعامة", "46 عين تموشنت", "47 غرداية", "48 غليزان", "49 أولاد جلال", "50 بني عباس", "51 إن صالح", "52 إن قزام", "53 تقرت", "54 جانت", "55 المغير", "56 المنيعة", "57 أولاد جلال", "58 برج باجي مختار"];
-        const wSelect = document.getElementById("cust-wilaya");
-        wilayas.forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
@@ -86,10 +87,11 @@
         }
 
         function renderCart() {
-            const cartDiv = document.getElementById("cart-items");
-            const total = cart.reduce((sum, item) => sum + parseInt(item.price), 0);
-            cartDiv.innerHTML = cart.map(i => `<p>${i.name} (${i.size}) - ${i.price} دج</p>`).join('');
-            if(cart.length > 0) cartDiv.innerHTML += `<hr><strong>المجموع الكلي: ${total} دج</strong>`;
+            const w = document.getElementById("cust-wilaya").value;
+            const d = document.getElementById("cust-delivery").value;
+            let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
+            let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
+            document.getElementById("cart-items").innerHTML = cart.map(i => `<p>${i.name} (${i.size}) - ${i.price} دج</p>`).join('') + (cart.length > 0 ? `<hr><strong>المجموع الفرعي: ${sub} دج</strong><br><strong>سعر التوصيل: ${ship} دج</strong><br><strong style="font-size:1.2em; color:#D4B483;">المجموع الكلي: ${sub + ship} دج</strong>` : '');
         }
 
         function sendOrder() {
@@ -98,24 +100,15 @@
             const w = document.getElementById("cust-wilaya").value;
             const d = document.getElementById("cust-delivery").value;
             const addr = document.getElementById("address-box").value;
-            if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال جميع البيانات!");
-            const total = cart.reduce((s, i) => s + parseInt(i.price), 0);
-            const productsList = cart.map(i => `\n- ${i.name} (${i.size}) : ${i.price} دج`).join('');
-            const msg = `🛍 *طلب جديد من AM Luxury*%0A%0A👤 *الاسم:* ${n}%0A📱 *الهاتف:* ${p}%0A📍 *الولاية:* ${w}%0A🚚 *التوصيل:* ${d}%0A` + (addr ? `🏡 *العنوان:* ${addr}%0A` : ``) + `%0A📦 *المنتجات:* ${productsList}%0A%0A💰 *المجموع الإجمالي:* ${total} دج`;
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`)
-            .then(() => {
-                showNotification("شكراً لثقتكم، سنتواصل معكم في أقرب وقت!");
+            if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال البيانات!");
+            let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
+            let ship = rates[w] ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
+            const msg = `🛍 *طلب جديد من AM Luxury*%0A%0A👤 *الاسم:* ${n}%0A📱 *الهاتف:* ${p}%0A📍 *الولاية:* ${w}%0A🚚 *التوصيل:* ${d}%0A` + (addr ? `🏡 *العنوان:* ${addr}%0A` : ``) + `%0A💰 *المجموع:* ${sub + ship} دج`;
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`).then(() => {
+                showNotification("شكراً لثقتكم!");
                 cart = []; renderCart();
-                document.getElementById("cust-name").value = ""; document.getElementById("cust-phone").value = ""; document.getElementById("address-box").value = "";
             });
         }
    </script>
-<div style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">
-    <p style="color: #fff; margin-bottom: 10px;">تابعنا على منصاتنا:</p>
-    <a href="https://www.tiktok.com/@am.luxury20" target="_blank" style="color: #D4B483; margin: 0 10px; text-decoration: none; font-weight: bold;">تيك توك</a>
-    <a href="https://www.instagram.com/am_luxury.20" target="_blank" style="color: #D4B483; margin: 0 10px; text-decoration: none; font-weight: bold;">إنستغرام</a>
-    <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank" style="color: #D4B483; margin: 0 10px; text-decoration: none; font-weight: bold;">فيسبوك</a>
-</div>
-    
 </body>
 </html>
