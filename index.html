@@ -8,23 +8,31 @@
         :root { --main-bg: #0A2626; --accent: #F5E6CC; --gold: #D4B483; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--main-bg); color: #fff; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* ضبط الحاوية لتناسب الهواتف ولا تخرج عن الإطار */
+        /* ضبط الحاوية لتناسب الهواتف وتكامل التصميم */
         .wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
         
-        .header-section { background: var(--accent); color: var(--main-bg); padding: 20px; border-radius: 0 0 20px 20px; border: 2px solid var(--gold); margin-bottom: 25px; box-sizing: border-box; }
-        .store-logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
-        .store-name { font-size: 2.2em; font-weight: bold; margin: 10px 0; }
-
-        /* تنسيق بطاقات المنتجات */
-        #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
-        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 15px; width: 100%; border: 2px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; }
+        /* الهيدر الجديد: أطول، بدون حواف سفلية دائرية، وبدون إطار سفلي للتكامل */
+        .header-section { background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-radius: 0; border: 2px solid var(--gold); border-bottom: none; margin-bottom: 0; box-sizing: border-box; }
         
-        .img-container { position: relative; width: 100%; height: 320px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
+        /* تكبير اللوغو */
+        .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
+        .store-name { font-size: 2.8em; font-weight: bold; margin: 15px 0 10px 0; }
+        
+        /* عبارة الثقة بالإنجليزية */
+        .confidence-tag { font-family: 'Garamond', serif; font-size: 1.1em; font-style: italic; color: var(--main-bg); margin: 0; font-weight: 500; }
+
+        /* تنسيق شبكة المنتجات */
+        #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
+        
+        /* بطاقة المنتج: ربطها بالهيدر عبر إزالة الهامش العلوي وتغيير الحواف الدائرية */
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; margin-top: -1px; /* يضمن تداخل الإطارات */ }
+        
+        .img-container { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
         .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 10px; font-weight: bold; border-radius: 50%; z-index: 2; }
         .prev { left: 5px; } .next { right: 5px; }
 
-        /* السلة العائمة المحدثة */
+        /* السلة العائمة */
         #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
         #cart-sidebar.active { left: 0; }
         .cart-icon-btn { position: fixed; bottom: 30px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
@@ -72,11 +80,11 @@
     <div class="header-section">
         <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" alt="AM Luxury Logo" class="store-logo">
         <h1 class="store-name">AM Luxury</h1>
-        <p>الأناقة والرفاهية في مكان واحد</p>
+        <p class="confidence-tag">"Confidence is not just worn, it is curated."</p>
     </div>
 
     <div class="wrapper">
-        <div id="product-container">جاري تحميل المنتجات...</div>
+        <div id="product-container">jari t">جاري تحميل المنتجات...</div>
 
         <div class="footer-info">
             <div class="social-links">
