@@ -16,15 +16,16 @@
         .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
         .btn-size { margin: 3px; border: 1px solid #D4B483; padding: 5px 10px; cursor: pointer; border-radius: 5px; background: #fff; color: #0A2626; }
         .btn-size.active { background: #0A2626; color: #D4B483; }
-        /* تصميم النافذة الجديدة */
-        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: #0A2626; color: #D4B483; padding: 25px; border-radius: 15px; border: 2px solid #D4B483; z-index: 9999; text-align: center; width: 85%; max-width: 300px; box-shadow: 0px 0px 20px rgba(212, 180, 131, 0.5); }
+        
+        /* تصميم النافذة المخصصة */
+        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: #F5E6CC; color: #0A2626; padding: 25px; border-radius: 15px; border: 3px solid #D4B483; z-index: 9999; text-align: center; width: 80%; max-width: 350px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
     <div id="custom-alert">
-        <p style="font-size: 1.2em; margin:0;">✨ شكراً لاختيارك AM Luxury!</p>
-        <p style="margin: 15px 0;">تم استلام طلبك بنجاح، وسيتواصل معك فريقنا في أقرب وقت.</p>
+        <p style="font-size: 1.3em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
+        <p style="margin: 0;">تم استلام طلبك بنجاح، سيتواصل معك فريقنا قريباً.</p>
     </div>
 
     <div class="header-section">
@@ -111,16 +112,22 @@
             
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=HTML`)
             .then(() => {
-                const alertBox = document.getElementById('custom-alert');
-                alertBox.style.display = 'block';
-                setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+                // إظهار الرسالة
+                const alertDiv = document.getElementById('custom-alert');
+                alertDiv.style.display = 'block';
+                
+                // إخفاء الرسالة بعد 5 ثواني
+                setTimeout(() => { alertDiv.style.display = 'none'; }, 5000);
+                
+                // تنظيف البيانات
                 cart = [];
                 renderCart();
                 document.getElementById('cust-name').value = '';
                 document.getElementById('cust-phone').value = '';
+                document.getElementById('cust-wilaya').value = '';
+                document.getElementById('cust-delivery').value = 'استلام من المكتب';
                 document.getElementById('address-box').value = '';
                 document.getElementById('address-box').style.display = 'none';
-                document.getElementById('cust-delivery').value = 'استلام من المكتب';
             });
         }
     </script>
