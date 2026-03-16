@@ -9,17 +9,13 @@
         .header-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #D4B483; }
         .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
         .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
-        .slogan { font-size: 1.2em; font-style: italic; color: #555; margin-bottom: 20px; }
         .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 300px; border: 2px solid #D4B483; }
-        .slider-container { position: relative; width: 100%; margin-bottom: 10px; }
         .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; }
-        .nav-btn { background: #0A2626; color: #D4B483; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; margin: 5px; font-weight: bold; }
         .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
         input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
         .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
         .btn-size { margin: 3px; border: 1px solid #D4B483; padding: 5px 10px; cursor: pointer; border-radius: 5px; background: #fff; color: #0A2626; }
         .btn-size.active { background: #0A2626; color: #D4B483; }
-        .footer-social { margin-top: 40px; padding: 20px; border-top: 1px solid #D4B483; color: #D4B483; }
     </style>
 </head>
 <body>
@@ -33,6 +29,7 @@
     <section class="cart-section">
         <h2 style="text-align: center;">🛒 سلة التسوق</h2>
         <div id="cart-items"></div>
+        <div id="cart-total" style="margin-top:10px; font-weight:bold;"></div>
         <hr>
         <input type="text" id="cust-name" placeholder="الاسم الكامل" required>
         <input type="tel" id="cust-phone" placeholder="رقم الهاتف" maxlength="10">
@@ -63,8 +60,7 @@
                 const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
                 selectedSizes[i] = available[0];
                 container.innerHTML += `<div class="product-card"><h3>${p.name}</h3>
-                    <img id="img-${i}" src="${p.image1}" class="product-img">
-                    <p>السعر: ${p.price} دج</p>
+                    <img src="${p.image1}" class="product-img"><p>السعر: ${p.price} دج</p>
                     <div id="size-btns-${i}">${allSizes.map(s => available.includes(s) ? `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : `<button class="btn-size" disabled style="opacity:0.3; text-decoration:line-through">${s}</button>`).join('')}</div>
                     <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة</button></div>`;
             });
@@ -85,11 +81,32 @@
             const d = document.getElementById("cust-delivery").value;
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div>${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart()">X</button></div>`).join('') + (cart.length ? `<br><strong>المجموع: ${sub + ship} دج</strong>` : '');
+            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div>${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart()">X</button></div>`).join('');
+            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع الفرعي: ${sub} دج <br> التوصيل: ${ship} دج <br> المجموع الكلي: ${sub + ship} دج` : '';
         }
 
         function sendOrder() {
-            // إضافة باقي دالة sendOrder هنا...
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const wilaya = document.getElementById('cust-wilaya').value;
+            const delivery = document.getElementById('cust-delivery').value;
+            const address = document.getElementById('address-box').value;
+
+            if (!name || !phone || !wilaya || cart.length === 0) {
+                alert("يرجى ملء جميع البيانات واختيار منتجات!");
+                return;
+            }
+
+            let msg = `🛍 طلب جديد من ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A`;
+            if(address) msg += `🏡 العنوان: ${address}%0A`;
+            msg += `%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size}) : ${i.price} دج`).join('%0A');
+            
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=HTML`)
+            .then(() => {
+                alert("شكراً لثقتكم بنا، سنتصل بكم في أقرب وقت!");
+                cart = [];
+                renderCart();
+            });
         }
     </script>
 </body>
