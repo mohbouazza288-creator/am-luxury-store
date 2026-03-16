@@ -63,10 +63,22 @@
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
         // التعديل هنا: استخدمنا feuille1S بدلاً من feuille1
+                fetch(API_SHEETY).then(r => r.json()).then(data => {
+            console.log("البيانات القادمة من Sheety هي:", data);
+            
+            // هنا، انظر إلى الـ Console في المتصفح لتعرف اسم المصفوفة الصحيح
+            // إذا كان الاسم مختلفاً، أخبرني به وسأقوم بتعديل الكود فوراً
+        }).catch(err => {
+            console.error("خطأ:", err);
+        });
         fetch(API_SHEETY).then(r => r.json()).then(data => {
-            const container = document.getElementById("product-container");
-            container.innerHTML = '';
-            const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            console.log("البيانات القادمة من Sheety هي:", data);
+            
+            // هنا، انظر إلى الـ Console في المتصفح لتعرف اسم المصفوفة الصحيح
+            // إذا كان الاسم مختلفاً، أخبرني به وسأقوم بتعديل الكود فوراً
+        }).catch(err => {
+            console.error("خطأ:", err);
+        });
             
             data.feuille1S.forEach((p, i) => {
                 const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
