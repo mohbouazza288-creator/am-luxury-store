@@ -49,22 +49,26 @@
         <button onclick="sendOrder()" class="add-btn" style="background:#0A2626; color:#D4B483;">إتمام الطلب</button>
     </section>
 
-    <script>
+        <script>
         const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/amLuxuryyyProdact/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
         let cart = [];
         let selectedSizes = {};
         
+        // قائمة الولايات
         const rates = { "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500] };
 
         const wSelect = document.getElementById("cust-wilaya");
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
+        // التعديل هنا: استخدمنا feuille1S بدلاً من feuille1
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
+            container.innerHTML = '';
             const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            data.feuille1.forEach((p, i) => {
+            
+            data.feuille1S.forEach((p, i) => {
                 const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
                 selectedSizes[i] = available[0];
                 
@@ -81,6 +85,7 @@
             });
         });
 
+        // باقي الدوال (بدون تغيير)
         function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
         function addToCart(name, price, i) { cart.push({name, price, size: selectedSizes[i]}); renderCart(); }
         function renderCart() {
@@ -109,7 +114,7 @@
                 cart = []; renderCart(); document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('cust-wilaya').value = ''; document.getElementById('cust-delivery').value = 'استلام من المكتب'; document.getElementById('address-box').value = ''; document.getElementById('address-box').style.display = 'none';
             });
         }
-    </script>
+        </script>
 </body>
 </html>
     
