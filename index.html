@@ -6,51 +6,51 @@
     <title>AM Luxury</title>
     <style>
         :root { --main-bg: #0A2626; --accent: #F5E6CC; --gold: #D4B483; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--main-bg); color: #fff; text-align: center; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--main-bg); color: #fff; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* تكبير الصفحة الرئيسية */
-        .wrapper { width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        /* ضبط الحاوية لتناسب الهواتف ولا تخرج عن الإطار */
+        .wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
         
-        .header-section { background: var(--accent); color: var(--main-bg); padding: 30px; border-radius: 0 0 20px 20px; border: 2px solid var(--gold); margin-bottom: 30px; }
-        .store-logo { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
-        .store-name { font-size: 2.8em; font-weight: bold; margin: 10px 0; }
+        .header-section { background: var(--accent); color: var(--main-bg); padding: 20px; border-radius: 0 0 20px 20px; border: 2px solid var(--gold); margin-bottom: 25px; box-sizing: border-box; }
+        .store-logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
+        .store-name { font-size: 2.2em; font-weight: bold; margin: 10px 0; }
 
-        /* شبكة المنتجات بشكل شريط واسع */
+        /* تنسيق بطاقات المنتجات */
         #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
-        .product-card { background: var(--accent); color: var(--main-bg); padding: 20px; border-radius: 15px; width: 100%; max-width: 380px; border: 2px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 15px; width: 100%; border: 2px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; }
         
-        .img-container { position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
+        .img-container { position: relative; width: 100%; height: 320px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
         .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 12px; font-weight: bold; border-radius: 50%; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 10px; font-weight: bold; border-radius: 50%; z-index: 2; }
         .prev { left: 5px; } .next { right: 5px; }
 
-        /* السلة العائمة (Popup) */
-        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; }
+        /* السلة العائمة المحدثة */
+        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
         #cart-sidebar.active { left: 0; }
-        .cart-icon-btn { position: fixed; bottom: 20px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 2px solid #fff; }
-        .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; float: left; }
+        .cart-icon-btn { position: fixed; bottom: 30px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
+        #cart-count { font-size: 0.7em; background: red; color: white; border-radius: 50%; padding: 2px 7px; position: absolute; top: 5px; right: 5px; font-weight: bold; }
+        .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; float: left; }
 
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; }
-        .add-btn { background: var(--gold); border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
-        .add-btn:hover { background: var(--main-bg); color: var(--gold); }
-        .btn-size { margin: 4px; border: 1px solid var(--gold); padding: 8px 15px; cursor: pointer; border-radius: 5px; background: #fff; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; font-size: 16px; }
+        .add-btn { background: var(--gold); border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 1.1em; transition: 0.3s; margin-top: 5px; }
+        .btn-size { margin: 3px; border: 1px solid var(--gold); padding: 8px 14px; cursor: pointer; border-radius: 5px; background: #fff; }
         .btn-size.active { background: var(--main-bg); color: var(--gold); }
 
-        /* تذييل الصفحة ونص التوصيل */
-        .footer-info { margin-top: 40px; padding: 25px; background: rgba(245, 230, 204, 0.1); border-radius: 15px; border-top: 1px solid var(--gold); }
-        .shipping-note { color: var(--gold); font-size: 1.1em; margin-top: 15px; line-height: 1.6; }
-        .social-links a { color: var(--accent); text-decoration: none; margin: 0 10px; font-weight: bold; }
+        /* نص التوصيل والتذييل */
+        .footer-info { margin-top: 30px; padding: 20px; background: rgba(245, 230, 204, 0.05); border-radius: 15px; border-top: 1px solid var(--gold); }
+        .shipping-note { color: var(--gold); font-size: 0.95em; margin-top: 15px; line-height: 1.6; }
+        .social-links a { color: var(--accent); text-decoration: none; margin: 0 8px; font-weight: bold; }
 
-        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 80%; max-width: 350px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
+        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 85%; max-width: 320px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
-    <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count" style="font-size: 0.6em; background: red; color: white; border-radius: 50%; padding: 2px 6px; position: absolute; top: 10px; right: 10px;">0</span></div>
+    <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
 
     <div id="cart-sidebar">
         <button class="close-cart" onclick="toggleCart()">إغلاق ✕</button>
-        <h2 style="margin-top: 40px; text-align: center;">🛒 طلبياتي</h2>
+        <h2 style="margin-top: 50px; text-align: center;">🛒 طلبياتي</h2>
         <div id="cart-items"></div>
         <div id="cart-total" style="margin: 20px 0; font-weight: bold; border-top: 1px solid var(--gold); padding-top: 10px;"></div>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
@@ -65,7 +65,7 @@
     </div>
 
     <div id="custom-alert">
-        <p style="font-size: 1.3em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
+        <p style="font-size: 1.2em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
         <p>تم استلام طلبك بنجاح!</p>
     </div>
 
@@ -150,8 +150,8 @@
             const d = document.getElementById("cust-delivery").value;
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div style="border-bottom: 1px solid #ddd; padding: 5px 0;">${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart();" style="color:red; background:none; border:none; cursor:pointer;">إزالة</button></div>`).join('');
-            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع: ${sub} دج <br> التوصيل: ${ship} دج <br> <span style="font-size: 1.3em;">الإجمالي: ${sub + ship} دج</span>` : 'السلة فارغة';
+            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div style="border-bottom: 1px solid #ddd; padding: 8px 0;">${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart();" style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;">إزالة</button></div>`).join('');
+            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع: ${sub} دج <br> التوصيل: ${ship} دج <br> <span style="font-size: 1.2em; color: var(--main-bg);">الإجمالي: ${sub + ship} دج</span>` : 'السلة فارغة';
             document.getElementById('cart-count').innerText = cart.length;
         }
 
@@ -170,4 +170,3 @@
     </script>
 </body>
 </html>
-
