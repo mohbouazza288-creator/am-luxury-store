@@ -37,7 +37,7 @@
         <div id="cart-items"></div>
         <hr>
         <input type="text" id="cust-name" placeholder="الاسم الكامل" required>
-        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (10 أرقام)" pattern="0[5-7][0-9]{8}" title="يرجى إدخال رقم هاتف صحيح يتكون من 10 أرقام" required>
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (10 أرقام)" pattern="0[5-7][0-9]{8}" maxlength="10" title="يرجى إدخال 10 أرقام تبدأ بـ 05 أو 06 أو 07" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
         <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
@@ -110,7 +110,6 @@
             const d = document.getElementById("cust-delivery").value;
             const addr = document.getElementById("address-box").value;
             
-            // التحقق من أن رقم الهاتف يتكون من 10 أرقام ويبدأ بـ 05/06/07
             const phoneRegex = /^0[5-7][0-9]{8}$/;
             if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال البيانات!");
             if(!phoneRegex.test(p)) return showNotification("يرجى إدخال رقم هاتف جزائري صحيح (10 أرقام)!");
