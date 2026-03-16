@@ -31,7 +31,7 @@
         <h1 class="store-name">AM Luxury</h1>
     </div>
 
-    <div id="product-container"></div>
+    <div id="product-container">جاري تحميل المنتجات...</div>
 
     <section class="cart-section">
         <h2 style="text-align: center;">🛒 سلة التسوق</h2>
@@ -62,18 +62,17 @@
 
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
+            container.innerHTML = "";
+            const sheetName = Object.keys(data)[0];
+            const products = data[sheetName];
             const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            // تأكدنا من استخدام الاسم الصحيح هنا:
-            const products = data.feuille1S; 
             
             products.forEach((p, i) => {
                 const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
                 selectedSizes[i] = available[0];
-                let imagesHtml = `<img src="${p.image1}" class="product-img">`;
+                let imagesHtml = p.image1 ? `<img src="${p.image1}" class="product-img">` : '';
                 if(p.image2) imagesHtml += `<img src="${p.image2}" class="product-img">`;
-                if(p.image3) imagesHtml += `<img src="${p.image3}" class="product-img">`;
-                if(p.image4) imagesHtml += `<img src="${p.image4}" class="product-img">`;
-
+                
                 container.innerHTML += `<div class="product-card"><h3>${p.name}</h3>${imagesHtml}<p>السعر: ${p.price} دج</p><div id="size-btns-${i}">${allSizes.map(s => available.includes(s) ? `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : `<button class="btn-size" disabled style="opacity:0.3; text-decoration:line-through">${s}</button>`).join('')}</div><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة</button></div>`;
             });
         });
