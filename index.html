@@ -9,8 +9,8 @@
         .header-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #D4B483; }
         .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
         .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
-        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 300px; border: 2px solid #D4B483; }
-        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; margin-top: 5px; }
+        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 350px; border: 2px solid #D4B483; }
+        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; border: 2px solid #D4B483; margin-top: 5px; }
         .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
         input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
         .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
@@ -50,7 +50,8 @@
     </section>
 
     <script>
-        const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/amLuxuryyyProdact/feuille1";
+        // الرابط الجديد الذي زودتني به
+        const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
         let cart = [];
@@ -65,27 +66,24 @@
             .then(data => {
                 const container = document.getElementById("product-container");
                 container.innerHTML = "";
-                // نأخذ اسم المصفوفة ديناميكياً لتجنب مشكلة undefined
-                const sheetName = Object.keys(data)[0];
-                const products = data[sheetName];
+                const products = data.feuille1 || [];
                 const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
                 
                 products.forEach((p, i) => {
-                    // نستخدم || للبحث عن العمود بأي اسم محتمل
-                    const name = p.name || p.Name || "منتج";
-                    const price = p.price || p.Price || 0;
-                    const image1 = p.image1 || p.Image1 || "";
-                    const sizesStr = p.sizes || p.Sizes || "S,M,L,XL,XXL";
+                    const name = p.name || "منتج";
+                    const price = p.price || 0;
+                    const image1 = p.image1 || "";
+                    const desc = p.description || "";
+                    const sizesStr = p.sizes || "S,M,L,XL,XXL";
                     
                     const available = sizesStr.split(',').map(s => s.trim());
                     selectedSizes[i] = available[0];
                     
-                    let imagesHtml = image1 ? `<img src="${image1}" class="product-img">` : '';
-                    
                     container.innerHTML += `
                         <div class="product-card">
                             <h3>${name}</h3>
-                            ${imagesHtml}
+                            ${image1 ? `<img src="${image1}" class="product-img">` : ''}
+                            <p style="font-size:0.9em; margin:10px 0;">${desc}</p>
                             <p>السعر: ${price} دج</p>
                             <div id="size-btns-${i}">
                                 ${allSizes.map(s => available.includes(s) ? 
@@ -97,7 +95,7 @@
                 });
             })
             .catch(err => {
-                document.getElementById("product-container").innerHTML = "خطأ في تحميل البيانات. يرجى الضغط على Sync في موقع Sheety.";
+                document.getElementById("product-container").innerHTML = "خطأ في تحميل البيانات.";
             });
 
         function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
