@@ -60,22 +60,45 @@
         const wSelect = document.getElementById("cust-wilaya");
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
-        fetch(API_SHEETY).then(r => r.json()).then(data => {
-            const container = document.getElementById("product-container");
-            container.innerHTML = "";
-            const sheetName = Object.keys(data)[0];
-            const products = data[sheetName];
-            const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            
-            products.forEach((p, i) => {
-                const available = p.sizes ? p.sizes.split(',').map(s => s.trim()) : allSizes;
-                selectedSizes[i] = available[0];
-                let imagesHtml = p.image1 ? `<img src="${p.image1}" class="product-img">` : '';
-                if(p.image2) imagesHtml += `<img src="${p.image2}" class="product-img">`;
+        fetch(API_SHEETY)
+            .then(r => r.json())
+            .then(data => {
+                const container = document.getElementById("product-container");
+                container.innerHTML = "";
+                // نأخذ اسم المصفوفة ديناميكياً لتجنب مشكلة undefined
+                const sheetName = Object.keys(data)[0];
+                const products = data[sheetName];
+                const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
                 
-                container.innerHTML += `<div class="product-card"><h3>${p.name}</h3>${imagesHtml}<p>السعر: ${p.price} دج</p><div id="size-btns-${i}">${allSizes.map(s => available.includes(s) ? `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : `<button class="btn-size" disabled style="opacity:0.3; text-decoration:line-through">${s}</button>`).join('')}</div><button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة</button></div>`;
+                products.forEach((p, i) => {
+                    // نستخدم || للبحث عن العمود بأي اسم محتمل
+                    const name = p.name || p.Name || "منتج";
+                    const price = p.price || p.Price || 0;
+                    const image1 = p.image1 || p.Image1 || "";
+                    const sizesStr = p.sizes || p.Sizes || "S,M,L,XL,XXL";
+                    
+                    const available = sizesStr.split(',').map(s => s.trim());
+                    selectedSizes[i] = available[0];
+                    
+                    let imagesHtml = image1 ? `<img src="${image1}" class="product-img">` : '';
+                    
+                    container.innerHTML += `
+                        <div class="product-card">
+                            <h3>${name}</h3>
+                            ${imagesHtml}
+                            <p>السعر: ${price} دج</p>
+                            <div id="size-btns-${i}">
+                                ${allSizes.map(s => available.includes(s) ? 
+                                    `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : 
+                                    `<button class="btn-size" disabled style="opacity:0.3; text-decoration:line-through">${s}</button>`).join('')}
+                            </div>
+                            <button class="add-btn" onclick="addToCart('${name}', ${price}, ${i})">إضافة للسلة</button>
+                        </div>`;
+                });
+            })
+            .catch(err => {
+                document.getElementById("product-container").innerHTML = "خطأ في تحميل البيانات. يرجى الضغط على Sync في موقع Sheety.";
             });
-        });
 
         function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
         function addToCart(name, price, i) { cart.push({name, price, size: selectedSizes[i]}); renderCart(); }
