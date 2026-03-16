@@ -86,7 +86,7 @@
                             <h3>${p.name || "منتج"}</h3>
                             <div class="img-container" id="img-box-${i}">
                                 ${productImages[i].length > 1 ? `<button class="nav-btn prev" onclick="changeImg(${i}, -1)">❮</button>` : ''}
-                                <img src="${productImages[i][0] || ''}" class="product-img" onclick="window.open('${productImages[i][0] || ''}')">
+                                <img src="${productImages[i][0] || ''}" class="product-img" onclick="window.open(this.src)">
                                 ${productImages[i].length > 1 ? `<button class="nav-btn next" onclick="changeImg(${i}, 1)">❯</button>` : ''}
                             </div>
                             <p style="font-size:0.9em; margin:10px 0;">${p.description || ""}</p>
