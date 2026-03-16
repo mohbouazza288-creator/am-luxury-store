@@ -100,7 +100,18 @@
             const d = document.getElementById("cust-delivery").value;
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            document.getElementById("cart-items").innerHTML = cart.map(i => `<p>${i.name} (${i.size}) - ${i.price} دج</p>`).join('') + (cart.length > 0 ? `<hr><strong>المجموع الفرعي: ${sub} دج</strong><br><strong>سعر التوصيل: ${ship} دج</strong><br><strong style="font-size:1.2em; color:#D4B483;">المجموع الكلي: ${sub + ship} دج</strong>` : '');
+            
+            document.getElementById("cart-items").innerHTML = cart.map((i, index) => 
+                `<div style="display:flex; justify-content:space-between; align-items:center; margin:5px 0; background:rgba(255,255,255,0.1); padding:5px; border-radius:5px;">
+                    <span>${i.name} (${i.size}) - ${i.price} دج</span>
+                    <button onclick="removeFromCart(${index})" style="background:#cc0000; color:white; border:none; border-radius:3px; padding:2px 8px; cursor:pointer;">X</button>
+                </div>`
+            ).join('') + (cart.length > 0 ? `<hr><strong>المجموع الفرعي: ${sub} دج</strong><br><strong>سعر التوصيل: ${ship} دج</strong><br><strong style="font-size:1.2em; color:#D4B483;">المجموع الكلي: ${sub + ship} دج</strong>` : '');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
         }
 
         function sendOrder() {
@@ -127,4 +138,5 @@
         }
    </script>
 </body>
-</html>
+            </html>
+            
