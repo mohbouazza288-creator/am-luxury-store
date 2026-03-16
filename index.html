@@ -17,6 +17,9 @@
         .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
         input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
         .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
+        /* Footer Style */
+        .footer-social { margin-top: 40px; padding: 20px; border-top: 1px solid #D4B483; color: #D4B483; }
+        .footer-social a { color: #fff; margin: 0 10px; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -33,8 +36,8 @@
         <h2 style="text-align: center;">🛒 سلة التسوق</h2>
         <div id="cart-items"></div>
         <hr>
-        <input type="text" id="cust-name" placeholder="الاسم الكامل">
-        <input type="text" id="cust-phone" placeholder="رقم الهاتف">
+        <input type="text" id="cust-name" placeholder="الاسم الكامل" required>
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (10 أرقام)" pattern="0[5-7][0-9]{8}" title="يرجى إدخال رقم هاتف صحيح يتكون من 10 أرقام" required>
         <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
         <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
@@ -44,13 +47,19 @@
         <button onclick="sendOrder()" class="add-btn" style="background:#0A2626; color:#D4B483;">إتمام الطلب</button>
     </section>
 
+    <div class="footer-social">
+        <p>تابعونا على:</p>
+        <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك</a> |
+        <a href="https://www.tiktok.com/@am.luxury20?_r=1&_t=ZS-94j6ZOS7wST" target="_blank">تيك توك</a> |
+        <a href="https://www.instagram.com/am_luxury.20?igsh=eDk3NnNpanUwOXI4" target="_blank">إنستغرام</a>
+    </div>
+
     <script>
         const API_SHEETY = "https://api.sheety.co/52fd183a674270cd4b36a72f4307bb93/feuilleDeCalculSansTitre/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
         let cart = [];
 
-        // خريطة أسعار التوصيل [منزل، مكتب]
         const rates = { "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500] };
 
         const wSelect = document.getElementById("cust-wilaya");
@@ -100,13 +109,21 @@
             const w = document.getElementById("cust-wilaya").value;
             const d = document.getElementById("cust-delivery").value;
             const addr = document.getElementById("address-box").value;
+            
+            // التحقق من أن رقم الهاتف يتكون من 10 أرقام ويبدأ بـ 05/06/07
+            const phoneRegex = /^0[5-7][0-9]{8}$/;
             if(!n || !p || !w || cart.length == 0) return showNotification("يرجى إكمال البيانات!");
+            if(!phoneRegex.test(p)) return showNotification("يرجى إدخال رقم هاتف جزائري صحيح (10 أرقام)!");
+
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = rates[w] ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
             const msg = `🛍 *طلب جديد من AM Luxury*%0A%0A👤 *الاسم:* ${n}%0A📱 *الهاتف:* ${p}%0A📍 *الولاية:* ${w}%0A🚚 *التوصيل:* ${d}%0A` + (addr ? `🏡 *العنوان:* ${addr}%0A` : ``) + `%0A💰 *المجموع:* ${sub + ship} دج`;
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`).then(() => {
                 showNotification("شكراً لثقتكم!");
                 cart = []; renderCart();
+                document.getElementById("cust-name").value = "";
+                document.getElementById("cust-phone").value = "";
+                document.getElementById("address-box").value = "";
             });
         }
    </script>
