@@ -39,7 +39,7 @@
         <div id="cart-total" style="margin-top:10px; font-weight:bold;"></div>
         <hr>
         <input type="text" id="cust-name" placeholder="الاسم الكامل" required>
-        <input type="tel" id="cust-phone" placeholder="القم الهاتف" maxlength="10">
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف" maxlength="10">
         <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
         <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
@@ -63,6 +63,7 @@
         fetch(API_SHEETY).then(r => r.json()).then(data => {
             const container = document.getElementById("product-container");
             const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            // تأكدنا من استخدام الاسم الصحيح هنا:
             const products = data.feuille1S; 
             
             products.forEach((p, i) => {
