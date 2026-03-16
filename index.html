@@ -25,7 +25,6 @@
     <div id="custom-alert">
         <p style="font-size: 1.2em; margin:0;">✨ شكراً لاختيارك AM Luxury!</p>
         <p style="margin: 15px 0;">تم استلام طلبك بنجاح، وسيتواصل معك فريقنا في أقرب وقت.</p>
-        <button onclick="document.getElementById('custom-alert').style.display='none'" style="background:#D4B483; border:none; padding:10px 20px; border-radius:5px; color:#0A2626; font-weight:bold; cursor:pointer;">موافق</button>
     </div>
 
     <div class="header-section">
@@ -112,12 +111,16 @@
             
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=HTML`)
             .then(() => {
-                document.getElementById('custom-alert').style.display = 'block';
+                const alertBox = document.getElementById('custom-alert');
+                alertBox.style.display = 'block';
+                setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
                 cart = [];
                 renderCart();
                 document.getElementById('cust-name').value = '';
                 document.getElementById('cust-phone').value = '';
                 document.getElementById('address-box').value = '';
+                document.getElementById('address-box').style.display = 'none';
+                document.getElementById('cust-delivery').value = 'استلام من المكتب';
             });
         }
     </script>
