@@ -5,24 +5,64 @@
     <meta charset="UTF-8">
     <title>AM Luxury</title>
     <style>
-        body { font-family: sans-serif; background-color: #0A2626; color: #fff; text-align: center; padding: 20px; }
-        .header-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #D4B483; }
-        .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #D4B483; margin-bottom: 10px; }
-        .store-name { font-size: 2.5em; font-weight: bold; margin: 10px 0 5px 0; color: #0A2626; }
-        .product-card { background: #F5E6CC; color: #0A2626; padding: 15px; border-radius: 15px; margin: 15px auto; max-width: 350px; border: 2px solid #D4B483; }
-        .img-container { position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px; border: 2px solid #D4B483; margin-top: 5px; }
+        :root { --main-bg: #0A2626; --accent: #F5E6CC; --gold: #D4B483; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--main-bg); color: #fff; text-align: center; margin: 0; padding: 0; }
+        
+        /* تكبير الصفحة الرئيسية */
+        .wrapper { width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        
+        .header-section { background: var(--accent); color: var(--main-bg); padding: 30px; border-radius: 0 0 20px 20px; border: 2px solid var(--gold); margin-bottom: 30px; }
+        .store-logo { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
+        .store-name { font-size: 2.8em; font-weight: bold; margin: 10px 0; }
+
+        /* شبكة المنتجات بشكل شريط واسع */
+        #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 20px; border-radius: 15px; width: 100%; max-width: 380px; border: 2px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        
+        .img-container { position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
         .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; cursor: pointer; padding: 10px; font-weight: bold; }
-        .prev { left: 0; } .next { right: 0; }
-        .cart-section { background: #F5E6CC; color: #0A2626; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: right; }
-        input, select { width: 90%; padding: 10px; margin: 5px; border-radius: 5px; border: 1px solid #D4B483; }
-        .add-btn { background: #D4B483; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; margin-top: 10px; }
-        .btn-size { margin: 3px; border: 1px solid #D4B483; padding: 5px 10px; cursor: pointer; border-radius: 5px; background: #fff; color: #0A2626; }
-        .btn-size.active { background: #0A2626; color: #D4B483; }
-        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: #F5E6CC; color: #0A2626; padding: 25px; border-radius: 15px; border: 3px solid #D4B483; z-index: 9999; text-align: center; width: 80%; max-width: 350px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 12px; font-weight: bold; border-radius: 50%; }
+        .prev { left: 5px; } .next { right: 5px; }
+
+        /* السلة العائمة (Popup) */
+        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; }
+        #cart-sidebar.active { left: 0; }
+        .cart-icon-btn { position: fixed; bottom: 20px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 2px solid #fff; }
+        .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; float: left; }
+
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; }
+        .add-btn { background: var(--gold); border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
+        .add-btn:hover { background: var(--main-bg); color: var(--gold); }
+        .btn-size { margin: 4px; border: 1px solid var(--gold); padding: 8px 15px; cursor: pointer; border-radius: 5px; background: #fff; }
+        .btn-size.active { background: var(--main-bg); color: var(--gold); }
+
+        /* تذييل الصفحة ونص التوصيل */
+        .footer-info { margin-top: 40px; padding: 25px; background: rgba(245, 230, 204, 0.1); border-radius: 15px; border-top: 1px solid var(--gold); }
+        .shipping-note { color: var(--gold); font-size: 1.1em; margin-top: 15px; line-height: 1.6; }
+        .social-links a { color: var(--accent); text-decoration: none; margin: 0 10px; font-weight: bold; }
+
+        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 80%; max-width: 350px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
+
+    <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count" style="font-size: 0.6em; background: red; color: white; border-radius: 50%; padding: 2px 6px; position: absolute; top: 10px; right: 10px;">0</span></div>
+
+    <div id="cart-sidebar">
+        <button class="close-cart" onclick="toggleCart()">إغلاق ✕</button>
+        <h2 style="margin-top: 40px; text-align: center;">🛒 طلبياتي</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total" style="margin: 20px 0; font-weight: bold; border-top: 1px solid var(--gold); padding-top: 10px;"></div>
+        <input type="text" id="cust-name" placeholder="الاسم الكامل">
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف">
+        <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
+        <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
+            <option value="استلام من المكتب">استلام من المكتب</option>
+            <option value="توصيل للمنزل">توصيل للمنزل</option>
+        </select>
+        <input type="text" id="address-box" placeholder="العنوان بالتفصيل" style="display:none;">
+        <button onclick="sendOrder()" class="add-btn" style="background: var(--main-bg); color: var(--gold); margin-top: 20px;">تأكيد الطلب الآن</button>
+    </div>
 
     <div id="custom-alert">
         <p style="font-size: 1.3em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
@@ -32,31 +72,26 @@
     <div class="header-section">
         <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" alt="AM Luxury Logo" class="store-logo">
         <h1 class="store-name">AM Luxury</h1>
+        <p>الأناقة والرفاهية في مكان واحد</p>
     </div>
 
-    <div id="product-container">جاري تحميل المنتجات...</div>
+    <div class="wrapper">
+        <div id="product-container">جاري تحميل المنتجات...</div>
 
-    <section class="cart-section">
-        <h2 style="text-align: center;">🛒 سلة التسوق</h2>
-        <div id="cart-items"></div>
-        <div id="cart-total" style="margin-top:10px; font-weight:bold;"></div>
-        <hr>
-        <input type="text" id="cust-name" placeholder="الاسم الكامل" required>
-        <input type="tel" id="cust-phone" placeholder="رقم الهاتف" maxlength="10">
-        <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
-        <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
-            <option value="استلام من المكتب">استلام من المكتب</option>
-            <option value="توصيل للمنزل">توصيل للمنزل</option>
-        </select>
-        <input type="text" id="address-box" placeholder="العنوان" style="display:none;">
-        <button onclick="sendOrder()" class="add-btn" style="background:#0A2626; color:#D4B483;">إتمام الطلب</button>
-        
-        <div style="margin-top: 20px; text-align: center;">
-            <a href="https://www.tiktok.com/@am.luxury20" target="_blank" style="margin: 5px; color: #0A2626;">تيك توك</a> | 
-            <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank" style="margin: 5px; color: #0A2626;">فيسبوك</a> | 
-            <a href="https://www.instagram.com/am_luxury.20" target="_blank" style="margin: 5px; color: #0A2626;">إنستغرام</a>
+        <div class="footer-info">
+            <div class="social-links">
+                <a href="https://www.tiktok.com/@am.luxury20" target="_blank">تيك توك</a> | 
+                <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك</a> | 
+                <a href="https://www.instagram.com/am_luxury.20" target="_blank">إنستغرام</a>
+            </div>
+            
+            <div class="shipping-note">
+                <p>🚛 نحن نعمل مع شركة <strong>Nord Express</strong> لضمان وصول طلباتكم بسرعة.</p>
+                <p>التوصيل متوفر لـ <strong>58 ولاية</strong> | الدفع عند الاستلام ✅</p>
+                <p>سرعة في التوصيل: <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
+            </div>
         </div>
-    </section>
+    </div>
 
     <script>
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
@@ -68,73 +103,71 @@
         const wSelect = document.getElementById("cust-wilaya");
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
 
-        fetch(API_SHEETY)
-            .then(r => r.json())
-            .then(data => {
-                const container = document.getElementById("product-container");
-                container.innerHTML = "";
-                const products = data.feuille1 || [];
-                const allSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-                
-                products.forEach((p, i) => {
-                    productImages[i] = [p.image1, p.image2, p.image3, p.image4].filter(img => img && img.trim() !== "");
-                    const available = (p.sizes || "S,M,L,XL,XXL").split(',').map(s => s.trim());
-                    selectedSizes[i] = available[0];
-                    
-                    container.innerHTML += `
-                        <div class="product-card">
-                            <h3>${p.name || "منتج"}</h3>
-                            <div class="img-container" id="img-box-${i}">
-                                ${productImages[i].length > 1 ? `<button class="nav-btn prev" onclick="changeImg(${i}, -1)">❮</button>` : ''}
-                                <img src="${productImages[i][0] || ''}" class="product-img" onclick="window.open(this.src)">
-                                ${productImages[i].length > 1 ? `<button class="nav-btn next" onclick="changeImg(${i}, 1)">❯</button>` : ''}
-                            </div>
-                            <p style="font-size:0.9em; margin:10px 0;">${p.description || ""}</p>
-                            <p>السعر: ${p.price || 0} دج</p>
-                            <div id="size-btns-${i}">
-                                ${allSizes.map(s => available.includes(s) ? `<button class="btn-size ${s==selectedSizes[i] ? 'active':''}" onclick="selectSize(${i}, '${s}')">${s}</button>` : '').join('')}
-                            </div>
-                            <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة</button>
-                        </div>`;
-                });
-            });
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
 
-        function changeImg(prodIdx, dir) {
-            const box = document.getElementById(`img-box-${prodIdx}`);
-            const img = box.querySelector('img');
-            let images = productImages[prodIdx];
-            let current = images.indexOf(img.src);
-            let next = (current + dir + images.length) % images.length;
-            img.src = images[next];
+        fetch(API_SHEETY).then(r => r.json()).then(data => {
+            const container = document.getElementById("product-container");
+            container.innerHTML = "";
+            const products = data.feuille1 || [];
+            products.forEach((p, i) => {
+                productImages[i] = [p.image1, p.image2, p.image3, p.image4].filter(img => img && img.trim() !== "");
+                const available = (p.sizes || "S,M,L,XL,XXL").split(',').map(s => s.trim());
+                selectedSizes[i] = available[0];
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="img-container" id="img-box-${i}">
+                            ${productImages[i].length > 1 ? `<button class="nav-btn prev" onclick="changeImg(${i}, -1)">❮</button>` : ''}
+                            <img src="${productImages[i][0]}" class="product-img" onclick="window.open(this.src)">
+                            ${productImages[i].length > 1 ? `<button class="nav-btn next" onclick="changeImg(${i}, 1)">❯</button>` : ''}
+                        </div>
+                        <h3>${p.name}</h3>
+                        <p style="color: #555; font-size: 0.9em;">${p.description || ""}</p>
+                        <p style="font-weight: bold; font-size: 1.2em; color: var(--main-bg);">${p.price} دج</p>
+                        <div id="size-btns-${i}">${available.map(s => `<button class="btn-size ${s==selectedSizes[i]?'active':''}" onclick="selectSize(${i},'${s}')">${s}</button>`).join('')}</div>
+                        <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة 🛒</button>
+                    </div>`;
+            });
+        });
+
+        function changeImg(idx, dir) {
+            const img = document.getElementById(`img-box-${idx}`).querySelector('img');
+            let imgs = productImages[idx];
+            let current = imgs.indexOf(img.src);
+            img.src = imgs[(current + dir + imgs.length) % imgs.length];
         }
 
         function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
-        function addToCart(name, price, i) { cart.push({name, price, size: selectedSizes[i]}); renderCart(); }
+        
+        function addToCart(name, price, i) { 
+            cart.push({name, price, size: selectedSizes[i]}); 
+            renderCart(); 
+            document.getElementById('cart-count').innerText = cart.length;
+            if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart();
+        }
+
         function renderCart() {
             const w = document.getElementById("cust-wilaya").value;
             const d = document.getElementById("cust-delivery").value;
             let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
             let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div>${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart()">X</button></div>`).join('');
-            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع الفرعي: ${sub} دج <br> التوصيل: ${ship} دج <br> المجموع الكلي: ${sub + ship} دج` : '';
+            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div style="border-bottom: 1px solid #ddd; padding: 5px 0;">${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart();" style="color:red; background:none; border:none; cursor:pointer;">إزالة</button></div>`).join('');
+            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع: ${sub} دج <br> التوصيل: ${ship} دج <br> <span style="font-size: 1.3em;">الإجمالي: ${sub + ship} دج</span>` : 'السلة فارغة';
+            document.getElementById('cart-count').innerText = cart.length;
         }
+
         function sendOrder() {
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
             const wilaya = document.getElementById('cust-wilaya').value;
             const delivery = document.getElementById('cust-delivery').value;
             const address = document.getElementById('address-box').value;
-            if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء جميع البيانات!"); return; }
-            let msg = `🛍 طلب جديد من ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A`;
-            if(address) msg += `🏡 العنوان: ${address}%0A`;
-            msg += `%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size}) : ${i.price} دج`).join('%0A');
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=HTML`)
-            .then(() => {
-                document.getElementById('custom-alert').style.display = 'block';
-                setTimeout(() => { document.getElementById('custom-alert').style.display = 'none'; }, 5000);
-                cart = []; renderCart(); document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('cust-wilaya').value = ''; document.getElementById('cust-delivery').value = 'استلام من المكتب'; document.getElementById('address-box').value = ''; document.getElementById('address-box').style.display = 'none';
-            });
+            if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء البيانات وإضافة منتجات!"); return; }
+            let msg = `🛍 طلب جديد من ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A🏡 العنوان: ${address}%0A%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size})`).join('%0A');
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}`);
+            document.getElementById('custom-alert').style.display = 'block';
+            setTimeout(() => { location.reload(); }, 3000);
         }
     </script>
 </body>
 </html>
+
