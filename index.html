@@ -103,9 +103,12 @@
             
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=HTML`)
             .then(() => {
-                alert("شكراً لثقتكم بنا، سنتصل بكم في أقرب وقت!");
+                alert("✨ شكراً لاختيارك AM Luxury!\n\nتم استلام طلبك بنجاح، وسيتواصل معك فريقنا في أقرب وقت لتأكيد التفاصيل.\n\nنتمنى لك يوماً سعيداً! 😊");
                 cart = [];
                 renderCart();
+                document.getElementById('cust-name').value = '';
+                document.getElementById('cust-phone').value = '';
+                document.getElementById('address-box').value = '';
             });
         }
     </script>
