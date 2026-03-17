@@ -20,10 +20,9 @@
             margin: 0; 
             padding: 0;
             overflow-x: hidden;
-            padding-bottom: 80px; /* مساحة للأزرار العائمة في الأسفل */
+            padding-bottom: 80px;
         }
 
-        /* شريط الإعلانات العلوي */
         .announcement-bar {
             background: var(--gold);
             color: var(--main-bg);
@@ -32,7 +31,6 @@
             font-weight: bold;
         }
 
-        /* الهيدر الجديد - شعار كبير في المنتصف */
         .header-section { 
             background: var(--accent-creme); 
             color: var(--main-bg); 
@@ -43,7 +41,7 @@
             align-items: center;
         }
         .store-logo { 
-            width: 120px; /* تكبير الشعار */
+            width: 120px; 
             height: 120px; 
             object-fit: cover; 
             border-radius: 50%; 
@@ -53,33 +51,29 @@
         .store-name { font-size: 2em; margin: 0; font-weight: bold; color: var(--main-bg); }
         .store-slogan { font-size: 1em; margin: 5px 0 0 0; color: #555; font-style: italic; }
 
-        /* الأزرار العائمة الجديدة في الأسفل */
+        /* زر السلة العائم الوحيد */
         .floating-controls {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
             z-index: 5000;
         }
         .floating-btn {
             background: var(--gold);
             color: var(--main-bg);
             border: 2px solid var(--main-bg);
-            padding: 12px 20px;
+            padding: 12px 30px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .floating-btn:active { transform: scale(0.95); }
 
-        /* واجهة المنتجات - تكبير كامل (الزوم) */
         #product-container {
             display: flex;
             flex-direction: column;
@@ -98,19 +92,17 @@
             border: 2px solid var(--gold);
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
-        .product-card h3 { font-size: 1.4em; margin: 15px 0; }
 
         .img-container { 
             position: relative; 
             width: 100%; 
-            height: 450px; /* زوم أكبر للصورة */
+            height: 450px; 
             overflow: hidden; 
             border-radius: 12px; 
             background: #fff;
         }
         .product-img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* الصفحات المنبثقة (السلة والإدارة) */
         .full-page-overlay {
             display: none;
             position: fixed;
@@ -130,25 +122,18 @@
             margin-bottom: 20px;
             width: 100%;
             font-weight: bold;
-            cursor: pointer;
         }
-
-        /* تنسيقات الجداول والقوائم داخل الصفحات */
-        .admin-table { width: 100%; border-collapse: collapse; background: var(--accent-creme); color: var(--main-bg); margin-top: 10px;}
-        .admin-table th, .admin-table td { border: 1px solid var(--gold); padding: 12px 8px; text-align: center; font-size: 13px; }
-        .admin-table th { background: var(--gold); }
 
         .cart-page-content { background: var(--accent-creme); color: var(--main-bg); padding: 25px; border-radius: 20px; text-align: right; }
         
-        /* أزرار وعناصر التحكم */
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px; cursor: pointer; border-radius: 50%; font-size: 18px; z-index: 10; }
-        .btn-size { margin: 5px; border: 1px solid var(--main-bg); padding: 10px 18px; cursor: pointer; border-radius: 8px; background: #fff; font-weight: bold; font-size: 14px; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px; cursor: pointer; border-radius: 50%; z-index: 10; }
+        .btn-size { margin: 5px; border: 1px solid var(--main-bg); padding: 10px 18px; cursor: pointer; border-radius: 8px; background: #fff; font-weight: bold; }
         .btn-size.active { background: var(--main-bg); color: var(--gold); border-color: var(--gold); }
         .add-btn { background: var(--main-bg); color: var(--gold); border: none; padding: 18px; width: 100%; cursor: pointer; border-radius: 12px; font-weight: bold; font-size: 18px; margin-top: 15px; }
         
         input, select { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--gold); box-sizing: border-box; font-size: 15px; }
         
-        #custom-alert { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-creme); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 20000; width: 85%; text-align: center; font-weight: bold; box-shadow: 0 0 30px rgba(0,0,0,0.6); }
+        #custom-alert { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-creme); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 20000; width: 85%; text-align: center; font-weight: bold; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #ddd; }
     </style>
 </head>
@@ -170,7 +155,6 @@
     </div>
 
     <div class="floating-controls">
-        <button class="floating-btn" onclick="askAdminPassword()">📦 السجلات</button>
         <button class="floating-btn" onclick="togglePage('cart-page', true)">🛒 السلة (<span id="cart-count">0</span>)</button>
     </div>
 
@@ -182,56 +166,23 @@
             <div id="cart-total" style="margin: 25px 0; font-weight:bold; border-top: 3px solid var(--main-bg); padding-top:20px; font-size: 1.3em;"></div>
             
             <hr style="border: 1px solid var(--gold); margin: 20px 0;">
-            <h3>📍 معلومات الزبون والتوصيل</h3>
-            <input type="text" id="cust-name" placeholder="الاسم الكامل للزبون">
-            <input type="tel" id="cust-phone" placeholder="رقم الهاتف (05/06/07)" maxlength="10">
-            <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر ولاية التوصيل...</option></select>
+            <h3>📍 معلومات التوصيل</h3>
+            <input type="text" id="cust-name" placeholder="الاسم الكامل">
+            <input type="tel" id="cust-phone" placeholder="رقم الهاتف" maxlength="10">
+            <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
             <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
-                <option value="استلام من المكتب">📦 استلام من المكتب (Yalidine/Noest)</option>
+                <option value="استلام من المكتب">📦 استلام من المكتب</option>
                 <option value="توصيل للمنزل">🏠 توصيل للمنزل</option>
             </select>
-            <input type="text" id="address-box" placeholder="العنوان بالتفصيل (للتوصيل المنزلي)" style="display:none;">
+            <input type="text" id="address-box" placeholder="العنوان بالتفصيل" style="display:none;">
             
-            <button onclick="sendOrder()" class="add-btn" style="background:#25D366; color:white; border:none; box-shadow: 0 4px 10px rgba(37,211,102,0.3);">تأكيد الطلب عبر تلغرام ✨</button>
-        </div>
-    </div>
-
-    <div id="admin-page" class="full-page-overlay">
-        <button class="close-page-btn" onclick="togglePage('admin-page', false)">إغلاق لوحة التحكم</button>
-        <div class="cart-page-content">
-            <h2 style="color:var(--main-bg); text-align: center; margin-top: 0;">📋 سجل الطلبات الأخير</h2>
-            <p style="text-align: center; font-size: 0.9em; color: #666; margin-bottom: 20px;">(يتم عرض محاكاة للطلبات المستلمة)</p>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>الطلبية</th>
-                        <th>الزبون</th>
-                        <th>الحالة</th>
-                        <th>التاريخ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>قميص بولو أبيض (M)</td>
-                        <td>محمد بوعزة</td>
-                        <td><span style="color:orange; font-weight:bold;">قيد الانتظار</span></td>
-                        <td>2026-03-17</td>
-                    </tr>
-                    <tr>
-                        <td>جينز كلاسيك (32)</td>
-                        <td>أحمد مسعودي</td>
-                        <td><span style="color:green; font-weight:bold;">تم التأكيد</span></td>
-                        <td>2026-03-16</td>
-                    </tr>
-                </tbody>
-            </table>
+            <button onclick="sendOrder()" class="add-btn" style="background:#25D366; color:white; border:none;">تأكيد الطلب ✨</button>
         </div>
     </div>
 
     <div id="product-container">جاري تحميل تشكيلة AM Luxury...</div>
 
     <script>
-        // الكود البرمجي الأصلي كما هو لضمان عمل السلة وتلغرام
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
@@ -242,16 +193,6 @@
 
         function togglePage(id, show) {
             document.getElementById(id).style.display = show ? 'block' : 'none';
-        }
-
-        // دالة حماية صفحة الإدارة بكلمة مرور
-        function askAdminPassword() {
-            const pass = prompt("الرجاء إدخال كلمة مرور الإدارة للدخول:");
-            if (pass === "2026") { // كلمة المرور الافتراضية
-                togglePage('admin-page', true);
-            } else if (pass !== null) {
-                alert("كلمة المرور خاطئة!");
-            }
         }
 
         const wSelect = document.getElementById("cust-wilaya");
@@ -268,7 +209,7 @@
                 container.innerHTML += `
                     <div class="product-card">
                         <div class="img-container" id="img-box-${i}">
-                            <img src="${productImages[i][0] || ''}" class="product-img" alt="${p.name}">
+                            <img src="${productImages[i][0] || ''}" class="product-img">
                             ${productImages[i].length > 1 ? `<button class="nav-btn" style="left:10px" onclick="changeImg(${i}, -1)">❮</button><button class="nav-btn" style="right:10px" onclick="changeImg(${i}, 1)">❯</button>` : ''}
                         </div>
                         <h3>${p.name}</h3>
@@ -294,8 +235,8 @@
             cart.push({name, price, size: selectedSizes[i]}); 
             document.getElementById('cart-count').innerText = cart.length;
             renderCart(); 
-            const btn = event.target; btn.innerText = "تمت الإضافة 👍"; btn.style.background = "#D4B483"; btn.style.color = "#0A2626";
-            setTimeout(()=> { btn.innerText="إضافة للسلة 🛒"; btn.style.background = "#0A2626"; btn.style.color = "#D4B483"; }, 1000);
+            const btn = event.target; btn.innerText = "تمت الإضافة 👍";
+            setTimeout(()=> { btn.innerText="إضافة للسلة 🛒"; }, 1000);
         }
 
         function renderCart() {
@@ -307,14 +248,14 @@
             document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `
                 <div class="cart-item">
                     <span><b>${i.name}</b> (${i.size})</span>
-                    <span style="color:red; cursor:pointer; font-weight:bold; font-size:1.2em;" onclick="cart.splice(${idx},1); document.getElementById('cart-count').innerText = cart.length; renderCart()">حذف ✖</span>
+                    <span style="color:red; cursor:pointer; font-weight:bold;" onclick="cart.splice(${idx},1); document.getElementById('cart-count').innerText = cart.length; renderCart()">حذف ✖</span>
                 </div>`).join('');
             
             document.getElementById("cart-total").innerHTML = cart.length ? `
                 <div style="display:flex; justify-content:space-between;"><span>قيمة السلعة:</span> <span>${sub} دج</span></div>
                 <div style="display:flex; justify-content:space-between;"><span>مصاريف التوصيل:</span> <span>${ship} دج</span></div>
                 <div style="display:flex; justify-content:space-between; font-size:1.3em; margin-top:15px; color:var(--main-bg); font-weight:bold;"><span>المجموع النهائي:</span> <span>${sub + ship} دج</span></div>
-            ` : 'السلة فارغة حالياً.. ابدأ التسوق الآن!';
+            ` : 'السلة فارغة حالياً..';
         }
 
         function sendOrder() {
@@ -322,7 +263,7 @@
             const phone = document.getElementById('cust-phone').value;
             const wilaya = document.getElementById('cust-wilaya').value;
             const delivery = document.getElementById('cust-delivery').value;
-            if (!name || phone.length < 10 || !wilaya || cart.length === 0) { alert("أكمل جميع البيانات المطلوبة من فضلك!"); return; }
+            if (!name || phone.length < 10 || !wilaya || cart.length === 0) { alert("أكمل جميع البيانات المطلوبة!"); return; }
             
             let msg = `🌟 *طلب جديد من AM Luxury*%0A%0A👤 *الزبون:* ${name}%0A📱 *الهاتف:* ${phone}%0A📍 *الولاية:* ${wilaya}%0A🚚 *النوع:* ${delivery}%0A`;
             if(document.getElementById('address-box').value) msg += `🏠 *العنوان:* ${document.getElementById('address-box').value}%0A`;
