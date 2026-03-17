@@ -23,15 +23,25 @@
             overflow-x: hidden;
         }
 
+        /* 1. إضافة شريط الإعلانات فوق */
+        .announcement-bar {
+            background: var(--gold);
+            color: var(--main-bg);
+            padding: 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
         /* الهيدر وشعار المتجر */
         .header-section { 
             background: var(--accent-creme); 
             color: var(--main-bg); 
             padding: 15px; 
             border-bottom: 3px solid var(--gold); 
+            position: relative;
         }
         .store-logo { 
-            width: 80px; /* تصغير اللوغو للزوم */
+            width: 80px; 
             height: 80px; 
             object-fit: cover; 
             border-radius: 50%; 
@@ -39,125 +49,94 @@
         }
         .store-name { font-size: 1.5em; margin: 5px 0; font-weight: bold; }
 
-        /* حاوية المنتجات */
-        #product-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 10px;
-            gap: 15px;
+        /* زر لفتح صفحة الجدول */
+        .admin-view-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--main-bg);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 4px 8px;
+            font-size: 10px;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        /* كارت المنتج - تصميم أصغر وأنيق */
+        /* حاوية المنتجات - تعديل الزوم */
+        #product-container {
+            display: flex;
+            flex-direction: column; /* جعلها تحت بعض للزوم */
+            align-items: center;
+            padding: 10px;
+            gap: 20px;
+        }
+
+        /* كارت المنتج - تطبيق الزوم */
         .product-card { 
             background: var(--accent-creme); 
             color: var(--main-bg); 
-            padding: 10px; 
+            padding: 15px; 
             border-radius: 12px; 
-            width: 45%; /* لعرض منتجين بجانب بعض في الشاشات المتوسطة */
-            min-width: 160px;
-            max-width: 250px;
+            width: 90%; /* تكبير العرض للزوم */
+            max-width: 400px;
             border: 1px solid var(--gold);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .product-card h3 { font-size: 0.9em; margin: 8px 0; height: 35px; overflow: hidden; }
+        .product-card h3 { font-size: 1.1em; margin: 8px 0; height: auto; }
 
         .img-container { 
             position: relative; 
             width: 100%; 
-            height: 180px; 
+            height: 350px; /* زيادة الطول للزوم */
             overflow: hidden; 
             border-radius: 8px; 
             background: #eee;
         }
         .product-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .nav-btn { 
-            position: absolute; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            background: rgba(0,0,0,0.3); 
-            color: white; 
-            border: none; 
-            padding: 5px 8px; 
-            font-size: 12px;
-            cursor: pointer; 
+        /* 2. صفحة الجدول الخاصة */
+        #admin-page {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--main-bg);
+            z-index: 20000;
+            padding: 20px;
+            overflow-y: auto;
         }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--accent-creme);
+            color: var(--main-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .admin-table th, .admin-table td {
+            border: 1px solid var(--gold);
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+        .admin-table th { background: var(--gold); }
 
-        /* المقاسات */
-        .btn-size { 
-            margin: 2px; 
-            border: 1px solid var(--main-bg); 
-            padding: 4px 8px; 
-            font-size: 11px;
-            cursor: pointer; 
-            border-radius: 4px; 
-            background: #fff; 
-        }
+        /* باقي التنسيقات الأصلية بدون تغيير */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 5px 8px; font-size: 12px; cursor: pointer; }
+        .btn-size { margin: 2px; border: 1px solid var(--main-bg); padding: 4px 8px; font-size: 11px; cursor: pointer; border-radius: 4px; background: #fff; }
         .btn-size.active { background: var(--main-bg); color: var(--gold); border-color: var(--gold); }
-
-        /* سلة التسوق */
-        .cart-section { 
-            background: var(--accent-creme); 
-            color: var(--main-bg); 
-            padding: 15px; 
-            margin: 20px 10px;
-            border-radius: 15px; 
-            text-align: right; 
-            font-size: 0.9em;
-        }
-        
-        input, select { 
-            width: 100%; 
-            padding: 10px; 
-            margin: 5px 0; 
-            border-radius: 6px; 
-            border: 1px solid var(--gold); 
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-
-        .add-btn { 
-            background: var(--main-bg); 
-            color: var(--gold); 
-            border: none; 
-            padding: 10px; 
-            width: 100%; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            margin-top: 5px;
-            font-size: 14px;
-        }
-
-        /* التنبيهات */
-        #custom-alert { 
-            display: none; 
-            position: fixed; 
-            top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            background: var(--accent-creme); 
-            color: var(--main-bg); 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 2px solid var(--gold); 
-            z-index: 10000; 
-            width: 70%;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            border: 1px solid #ddd;
-        }
+        .cart-section { background: var(--accent-creme); color: var(--main-bg); padding: 15px; margin: 20px 10px; border-radius: 15px; text-align: right; font-size: 0.9em; }
+        input, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 6px; border: 1px solid var(--gold); box-sizing: border-box; font-size: 14px; }
+        .add-btn { background: var(--main-bg); color: var(--gold); border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 6px; font-weight: bold; margin-top: 5px; font-size: 14px; }
+        #custom-alert { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-creme); color: var(--main-bg); padding: 20px; border-radius: 12px; border: 2px solid var(--gold); z-index: 10000; width: 70%; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .cart-item { display: flex; justify-content: space-between; background: #fff; padding: 5px 10px; border-radius: 5px; margin-bottom: 5px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
+
+    <div class="announcement-bar">
+        <marquee direction="right">✨ توصيل سريع لـ 58 ولاية - استمتع بأفضل المنتجات مع AM Luxury ✨</marquee>
+    </div>
 
     <div id="custom-alert">
         <p style="font-weight:bold;">✨ AM Luxury</p>
@@ -165,9 +144,30 @@
     </div>
 
     <div class="header-section">
+        <button class="admin-view-btn" onclick="document.getElementById('admin-page').style.display='block'">سجل الطلبات</button>
         <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="store-logo">
         <h1 class="store-name">AM Luxury</h1>
         <p style="margin:0; font-size: 0.8em;">الفخامة الجزائرية في جيبك</p>
+    </div>
+
+    <div id="admin-page">
+        <button onclick="document.getElementById('admin-page').style.display='none'" style="background:red; color:white; border:none; padding:10px; margin-bottom:10px; border-radius:5px;">إغلاق سجل الطلبات</button>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>الطلبية</th>
+                    <th>الحالة</th>
+                    <th>التاريخ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>قميص AM أسود (L)</td>
+                    <td><span style="color:green">مؤكد</span></td>
+                    <td>2026-03-17</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div id="product-container">جاري التحميل...</div>
@@ -194,6 +194,7 @@
     </footer>
 
     <script>
+        // الكود البرمجي الأصلي كما هو تماماً لضمان عمل السلة وتلغرام
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
@@ -241,7 +242,6 @@
         function addToCart(name, price, i) { 
             cart.push({name, price, size: selectedSizes[i]}); 
             renderCart(); 
-            // تأثير بصري بسيط
             const btn = event.target; btn.innerText = "تمت الإضافة 👍"; setTimeout(()=> btn.innerText="إضافة ✅", 1000);
         }
 
