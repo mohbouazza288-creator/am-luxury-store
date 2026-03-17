@@ -20,13 +20,14 @@
         .page { display: none; padding: 20px; min-height: 60vh; }
         .page.active { display: block; }
 
-        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 15px; margin: 20px auto; max-width: 400px; border: 2px solid var(--gold); text-align: right; }
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 15px; margin: 20px auto; max-width: 400px; border: 2px solid var(--gold); text-align: right; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); }
         .img-container { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
         .product-img { width: 100%; height: 100%; object-fit: cover; }
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; }
 
         .size-container { margin: 10px 0; display: flex; flex-wrap: wrap; gap: 5px; }
-        .size-btn { border: 1px solid var(--main-bg); padding: 5px 12px; border-radius: 5px; background: #fff; cursor: pointer; font-weight: bold; }
+        .size-btn { border: 1px solid var(--main-bg); padding: 5px 12px; border-radius: 5px; background: #fff; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .size-btn.active { background: var(--main-bg); color: var(--gold); }
 
         .cart-section { background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 20px; margin: 20px auto; max-width: 450px; text-align: right; border: 2px solid var(--gold); }
@@ -34,9 +35,10 @@
         .confirm-btn { background: var(--main-bg); color: var(--gold); border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
 
         .admin-table-container { background: white; color: #333; padding: 15px; border-radius: 10px; overflow-x: auto; }
-        .admin-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.9em; }
-        .status-btn { padding: 5px 8px; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8em; font-weight: bold; }
+        .admin-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.85em; }
+        .status-select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; cursor: pointer; }
+        .del-btn { background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; }
 
         #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10005; width: 80%; }
     </style>
@@ -44,7 +46,20 @@
 <body>
 
     <div class="announcement-bar"><div class="announcement-text">🚛 توصيل سريع (24/48 ساعة) | 🤝 الدفع عند الاستلام | ✨ AM Luxury</div></div>
-    <div class="admin-dots" onclick="loginAdmin()">⋮</div>
+    <div class="admin-dots" onclick="openAdminModal()">⋮</div>
+
+    <div id="admin-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20000; justify-content:center; align-items:center;">
+        <div style="background:var(--accent); padding:30px; border-radius:20px; border:3px solid var(--gold); max-width:90%; width:350px; text-align:center;">
+            <h2 style="color:var(--gold); margin-bottom:10px;">الإدارة</h2>
+            <div style="font-size:40px; margin-bottom:10px;">🚫</div>
+            <p style="color:var(--main-bg); font-weight:bold; margin-bottom:20px;">ممنوع اللمس هنا، هذا المكان مخصص للمطورين. شكراً لتفهمكم.</p>
+            <input type="password" id="admin-pass-input" placeholder="أدخل كود الدخول" style="text-align:center; border:2px solid var(--main-bg); margin-bottom:15px;">
+            <div style="display:flex; gap:10px;">
+                <button onclick="checkAdminPass()" style="flex:1; background:var(--main-bg); color:var(--gold); padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">دخول</button>
+                <button onclick="closeAdminModal()" style="flex:1; background:#ccc; color:#333; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">إلغاء</button>
+            </div>
+        </div>
+    </div>
 
     <div id="shop-page" class="page active">
         <div class="header-section">
@@ -79,7 +94,7 @@
         <h2 style="color:var(--gold);">📦 سجل الطلبات</h2>
         <div class="admin-table-container">
             <table class="admin-table">
-                <thead><tr><th>الزبون</th><th>الهاتف</th><th>الولاية</th><th>الطلبية</th><th>الحالة</th><th>التاريخ</th></tr></thead>
+                <thead><tr><th>الزبون</th><th>الهاتف</th><th>الولاية</th><th>توصيل</th><th>الطلبية</th><th>الحالة</th><th>التاريخ</th><th>حذف</th></tr></thead>
                 <tbody id="orders-rows"></tbody>
             </table>
         </div>
@@ -96,7 +111,6 @@
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
 
-        // تم استبدال القائمة بالولايات والأسعار التي أرسلتها أنت
         const rates = { 
             "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500]
         };
@@ -121,6 +135,13 @@
             const b = document.getElementById('custom-alert');
             document.getElementById('alert-msg').innerText = msg;
             b.style.display = 'block'; setTimeout(() => b.style.display = 'none', 2500);
+        }
+
+        function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; }
+        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; document.getElementById('admin-pass-input').value = ''; }
+        function checkAdminPass() {
+            if (document.getElementById('admin-pass-input').value === "2026") { closeAdminModal(); showPage('admin-page'); loadOrders(); }
+            else { alert("الكود خاطئ!"); }
         }
 
         fetch(API_SHEETY).then(r => r.json()).then(data => {
@@ -176,27 +197,33 @@
         }
 
         async function sendOrder() {
-            const name = document.getElementById('cust-name').value, phone = document.getElementById('cust-phone').value, wilaya = document.getElementById('cust-wilaya').value;
+            const name = document.getElementById('cust-name').value, phone = document.getElementById('cust-phone').value, wilaya = document.getElementById('cust-wilaya').value, delivery = document.getElementById('cust-delivery').value;
             if (!name || phone.length < 10 || !wilaya || cart.length === 0) return alert("أكمل البيانات!");
             const itemsTxt = cart.map(i => `${i.name} (${i.size})`).join(', ');
+            const shipCost = rates[wilaya][delivery === 'توصيل للمنزل' ? 0 : 1];
 
-            await supabaseClient.from('orders').insert([{ customer_name: name, phone, wilaya, items: itemsTxt, status: 'جديد' }]);
+            await supabaseClient.from('orders').insert([{ customer_name: name, phone, wilaya, items: itemsTxt, status: 'جديد', shipping_cost: shipCost }]);
             
-            const msg = `🛍 طلب جديد: ${name}\n📱 هاتف: ${phone}\n📍 ولاية: ${wilaya}\n📦 طلب: ${itemsTxt}`;
+            const msg = `🛍 طلب جديد: ${name}\n📱 هاتف: ${phone}\n📍 ولاية: ${wilaya}\n🚚 توصيل: ${shipCost} دج\n📦 طلب: ${itemsTxt}`;
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
             
             showAlert("✨ تم الطلب بنجاح!"); setTimeout(() => location.reload(), 2000);
         }
 
-        function loginAdmin() { if (prompt("كود الإدارة:") === "2026") { showPage('admin-page'); loadOrders(); } }
-
         async function updateStatus(id, newStatus) {
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
-            if (!error) { showAlert("✅ تم التحديث"); loadOrders(); }
+            if (!error) { showAlert("✅ تم تثبيت الحالة"); loadOrders(); }
+        }
+
+        async function deleteOrder(id) {
+            if(confirm("هل أنت متأكد من حذف هذه الطلبية؟")) {
+                const { error } = await supabaseClient.from('orders').delete().eq('id', id);
+                if (!error) { showAlert("🗑️ تم الحذف"); loadOrders(); }
+            }
         }
 
         async function loadOrders() {
-            const rows = document.getElementById('orders-rows'); rows.innerHTML = "<tr><td colspan='6'>جاري التحميل...</td></tr>";
+            const rows = document.getElementById('orders-rows'); rows.innerHTML = "<tr><td colspan='8'>جاري التحميل...</td></tr>";
             const { data } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
 
             if (data) {
@@ -205,15 +232,18 @@
                         <td>${o.customer_name}</td>
                         <td>${o.phone}</td>
                         <td>${o.wilaya}</td>
-                        <td>${o.items}</td>
+                        <td>${o.shipping_cost || 0} دج</td>
+                        <td style="font-size:0.75em;">${o.items}</td>
                         <td>
-                            <select class="status-btn" onchange="updateStatus(${o.id}, this.value)" style="background:${o.status==='تم التأكيد'?'#d4edda':o.status==='جديد'?'#fff3cd':'#f8d7da'}">
+                            <select class="status-select" onchange="updateStatus(${o.id}, this.value)" style="background:${o.status==='تم التأكيد'?'#d4edda':o.status==='جديد'?'#fff3cd':o.status==='مرفوض'?'#f8d7da':'#cce5ff'}">
                                 <option value="جديد" ${o.status==='جديد'?'selected':''}>جديد 🆕</option>
                                 <option value="تم التأكيد" ${o.status==='تم التأكيد'?'selected':''}>مؤكد ✅</option>
                                 <option value="تم الإرسال" ${o.status==='تم الإرسال'?'selected':''}>مرسل 🚚</option>
+                                <option value="مرفوض" ${o.status==='مرفوض'?'selected':''}>مرفوض ❌</option>
                             </select>
                         </td>
                         <td>${new Date(o.created_at).toLocaleDateString('ar-DZ')}</td>
+                        <td><button class="del-btn" onclick="deleteOrder(${o.id})">🗑️</button></td>
                     </tr>
                 `).join('');
             }
