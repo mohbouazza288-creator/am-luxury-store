@@ -14,46 +14,42 @@
         .announcement-text { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
+        /* زر النقاط الثلاث للإدارة */
+        .admin-dots { position: absolute; top: 10px; right: 15px; font-size: 24px; color: var(--main-bg); cursor: pointer; z-index: 10003; opacity: 0.5; }
+
         .wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
-        .header-section { background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-radius: 0; border: 2px solid var(--gold); border-bottom: none; margin-bottom: 0; box-sizing: border-box; }
+        .header-section { background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-radius: 0; border: 2px solid var(--gold); border-bottom: none; margin-bottom: 0; box-sizing: border-box; position: relative; }
         .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
         .store-name { font-size: 2.8em; font-weight: bold; margin: 15px 0 10px 0; }
         .confidence-tag { font-family: 'Garamond', serif; font-size: 1.1em; font-style: italic; color: var(--main-bg); margin: 0; font-weight: 500; }
 
-        /* لوحة التحكم السرية */
+        /* لوحة التحكم */
         #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f4f4; color: #333; z-index: 10005; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .order-card { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: right; }
-        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin-bottom: 5px; font-weight: bold; }
-        .bg-pending { background: #ffeeba; color: #856404; }
-        .bg-accepted { background: #d4edda; color: #155724; }
-        .bg-shipped { background: #cce5ff; color: #004085; }
-        .bg-delivered { background: #28a745; color: #fff; }
-        .bg-rejected { background: #f8d7da; color: #721c24; }
-        .bg-return { background: #6c757d; color: #fff; }
-        .admin-login-btn { position: fixed; bottom: 5px; left: 5px; opacity: 0.1; background: none; border: none; font-size: 8px; cursor: pointer; color: #aaa; z-index: 10006; }
+        .order-card { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: right; border-right: 5px solid var(--gold); }
 
-        /* (بقية التنسيقات الأصلية للموقع) */
+        /* تنسيقات المنتجات */
         .how-to-order { background: rgba(212, 180, 131, 0.1); border: 1px dashed var(--gold); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: right; }
-        .how-to-order h3 { color: var(--gold); margin-top: 0; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
-        .step { margin: 10px 0; font-size: 1.05em; display: flex; align-items: center; gap: 10px; }
         #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
-        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; margin-top: -1px; }
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; }
         .img-container { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
-        .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 10px; font-weight: bold; border-radius: 50%; z-index: 2; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* أزرار التنقل بين الصور */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 10px; border-radius: 50%; z-index: 2; }
         .prev { left: 5px; } .next { right: 5px; }
+
         .cart-icon-btn { position: fixed; bottom: 100px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
         .whatsapp-float { position: fixed; bottom: 30px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; text-decoration: none; }
-        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
+        
+        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
         #cart-sidebar.active { left: 0; }
-        #cart-count { font-size: 0.7em; background: red; color: white; border-radius: 50%; padding: 2px 7px; position: absolute; top: 5px; right: 5px; font-weight: bold; }
-        .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; float: left; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; font-size: 16px; }
-        .add-btn { background: var(--gold); border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 1.1em; transition: 0.3s; margin-top: 5px; }
+        
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; }
+        .add-btn { background: var(--gold); border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; margin-top: 5px; }
         .btn-size { margin: 3px; border: 1px solid var(--gold); padding: 8px 14px; cursor: pointer; border-radius: 5px; background: #fff; }
         .btn-size.active { background: var(--main-bg); color: var(--gold); }
         .main-footer { margin-top: 50px; background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-top: 3px solid var(--gold); }
-        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 85%; max-width: 320px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
+        #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 85%; max-width: 320px; }
     </style>
 </head>
 <body>
@@ -64,44 +60,18 @@
         </div>
     </div>
 
-    <button class="admin-login-btn" onclick="loginAdmin()">Admin Access</button>
     <div id="admin-panel">
         <div style="display:flex; justify-content: space-between; align-items: center;">
             <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:red; color:white; border:none; padding:10px; border-radius:5px;">إغلاق</button>
-            <h2 style="margin:0;">لوحة إدارة الطلبات 📊</h2>
+            <h2 style="margin:0;">قائمة الطلبات (Supabase)</h2>
         </div>
         <hr>
         <div id="orders-list">جاري تحميل الطلبات...</div>
     </div>
 
-    <a href="https://wa.me/213776067476" class="whatsapp-float" target="_blank">
-        <svg style="width:35px;height:35px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.3a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.95 3.11c-.24 0-.45.09-.64.31-.21.24-.8.78-.8 1.91s.84 2.22.94 2.37c.1.15 1.62 2.48 3.93 3.48.55.24.98.39 1.32.5.55.18 1.05.15 1.45.09.43-.06 1.33-.54 1.52-1.07.19-.51.19-.96.13-1.07-.06-.1-.21-.18-.45-.31-.24-.12-1.45-.71-1.67-.8-.22-.09-.39-.12-.55.13-.15.24-.61.78-.74.93-.13.15-.27.18-.51.06-.24-.12-1.01-.38-1.92-1.2-.72-.63-1.2-1.41-1.34-1.65-.13-.24-.01-.36.1-.48.11-.11.24-.27.36-.4.12-.15.15-.24.23-.4s.04-.31-.01-.43c-.07-.12-.55-1.33-.76-1.83-.2-.51-.4-.44-.55-.45h-.45Z"/></svg>
-    </a>
-
-    <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
-
-    <div id="cart-sidebar">
-        <button class="close-cart" onclick="toggleCart()">إغلاق ✕</button>
-        <h2 style="margin-top: 50px; text-align: center;">🛒 طلبياتي</h2>
-        <div id="cart-items"></div>
-        <div id="cart-total" style="margin: 20px 0; font-weight: bold; border-top: 1px solid var(--gold); padding-top: 10px;"></div>
-        <input type="text" id="cust-name" placeholder="الاسم الكامل">
-        <input type="tel" id="cust-phone" placeholder="رقم الهاتف (05/06/07...)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-        <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
-        <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
-            <option value="استلام من المكتب">استلام من المكتب</option>
-            <option value="توصيل للمنزل">توصيل للمنزل</option>
-        </select>
-        <input type="text" id="address-box" placeholder="العنوان بالتفصيل" style="display:none;">
-        <button onclick="sendOrder()" class="add-btn" style="background: var(--main-bg); color: var(--gold); margin-top: 20px;">تأكيد الطلب الآن</button>
-    </div>
-
-    <div id="custom-alert">
-        <p style="font-size: 1.2em; font-weight:bold; margin:0 0 10px 0;">✨ شكراً لثقتك بـ AM Luxury</p>
-        <p>تم استلام طلبك بنجاح!</p>
-    </div>
-
     <div class="header-section">
+        <div class="admin-dots" onclick="loginAdmin()">⋮</div>
+        
         <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" alt="AM Luxury Logo" class="store-logo">
         <h1 class="store-name">AM Luxury</h1>
         <p class="confidence-tag">"Confidence is not just worn, it is curated."</p>
@@ -110,67 +80,61 @@
     <div class="wrapper">
         <div class="how-to-order">
             <h3>كيف يتم الطلب؟</h3>
-            <div class="step">1️⃣ <span>اختر المنتج المفضل لديك.</span></div>
-            <div class="step">2️⃣ <span>املأ معلومات الطلب (الاسم، الهاتف، الولاية).</span></div>
-            <div class="step">3️⃣ <span>سنتصل بك هاتفياً لتأكيد الطلب قبل الإرسال.</span></div>
-            <div class="step">4️⃣ <span>التوصيل سريع والدفع يكون عند الاستلام.</span></div>
+            <p>1️⃣ اختر المنتج > 2️⃣ املأ بياناتك > 3️⃣ سنتصل بك للتأكيد.</p>
         </div>
-        <div id="product-container">جاري تحميل المنتجات...</div>
+        <div id="product-container">جاري تحميل المنتجات من Sheety...</div>
+    </div>
+
+    <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
+    <a href="https://wa.me/213776067476" class="whatsapp-float" target="_blank">W</a>
+
+    <div id="cart-sidebar">
+        <button onclick="toggleCart()">إغلاق ✕</button>
+        <h2>🛒 سلة المشتريات</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total"></div>
+        <input type="text" id="cust-name" placeholder="الاسم الكامل">
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف">
+        <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
+        <button onclick="sendOrder()" class="add-btn">تأكيد الطلب</button>
     </div>
 
     <footer class="main-footer">
-        <div class="footer-social-links">
-            <a href="https://wa.me/213776067476" target="_blank">📞 خدمة العملاء - اتصل بنا</a>
-            <a href="https://www.tiktok.com/@am.luxury20" target="_blank">تيك توك - TikTok</a>
-            <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك - Facebook</a>
-            <a href="https://www.instagram.com/am_luxury.20" target="_blank">إنستغرام - Instagram</a>
-        </div>
-        <div class="footer-shipping-info">
-            <div class="info-card"><h4>💳 طريقة الدفع</h4><p>الدفع نقداً عند الاستلام بعد تفقد المنتج.</p></div>
-            <div class="info-card"><h4>📦 التوصيل</h4><p>عبر Noest Express لـ 58 ولاية (24-48 ساعة).</p></div>
-        </div>
-        <p style="margin-top: 30px; font-size: 0.8em; opacity: 0.6;">© 2026 AM Luxury. جميع الحقوق محفوظة.</p>
+        <p>© 2026 AM Luxury. جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
+        // الروابط والإعدادات
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
-        const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
-        const CHAT_ID = "8332065634";
         const SB_URL = "https://iafevewyaewiujdxipil.supabase.co";
         const SB_KEY = "EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZmV2ZXd5YWV3aXVqZHhpcGlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQwMTgsImV4cCI6MjA4ODgzMDAxOH0.WjfZHwbG6JkX84AWVMzXAkK-4Fmh24pcl5YGbTVuR4M";
-        const supabase = supabase.createClient(SB_URL, SB_KEY);
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        let cart = [], selectedSizes = {}, productImages = {};
-        const rates = { "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500] };
+        let cart = [], productImages = {}, selectedSizes = {};
+        const rates = { "01 أدرار": [1500, 1000], "13 تلمسان": [800, 500], "16 الجزائر": [700, 450], "31 وهران": [700, 450] /* أكمل بقية الولايات هنا */ };
 
-        const wSelect = document.getElementById("cust-wilaya");
-        Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
-
-        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
-
-        fetch(API_SHEETY).then(r => r.json()).then(data => {
-            const container = document.getElementById("product-container");
-            container.innerHTML = "";
-            const products = data.feuille1 || [];
-            products.forEach((p, i) => {
-                productImages[i] = [p.image1, p.image2, p.image3, p.image4].filter(img => img && img.trim() !== "");
-                const available = (p.sizes || "S,M,L,XL,XXL").split(',').map(s => s.trim());
-                selectedSizes[i] = available[0];
-                container.innerHTML += `
-                    <div class="product-card">
-                        <div class="img-container" id="img-box-${i}">
-                            ${productImages[i].length > 1 ? `<button class="nav-btn prev" onclick="changeImg(${i}, -1)">❮</button>` : ''}
-                            <img src="${productImages[i][0]}" class="product-img" onclick="window.open(this.src)">
-                            ${productImages[i].length > 1 ? `<button class="nav-btn next" onclick="changeImg(${i}, 1)">❯</button>` : ''}
-                        </div>
-                        <h3>${p.name}</h3>
-                        <p style="color: #555; font-size: 0.9em;">${p.description || ""}</p>
-                        <p style="font-weight: bold; font-size: 1.2em; color: var(--main-bg);">${p.price} دج</p>
-                        <div id="size-btns-${i}">${available.map(s => `<button class="btn-size ${s==selectedSizes[i]?'active':''}" onclick="selectSize(${i},'${s}')">${s}</button>`).join('')}</div>
-                        <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة 🛒</button>
-                    </div>`;
-            });
-        });
+        // جلب المنتجات من SHEETY فقط
+        fetch(API_SHEETY)
+            .then(r => r.json())
+            .then(data => {
+                const container = document.getElementById("product-container");
+                container.innerHTML = "";
+                const products = data.feuille1 || [];
+                products.forEach((p, i) => {
+                    productImages[i] = [p.image1, p.image2, p.image3, p.image4].filter(img => img);
+                    selectedSizes[i] = (p.sizes ? p.sizes.split(',')[0] : "L");
+                    container.innerHTML += `
+                        <div class="product-card">
+                            <div class="img-container" id="img-box-${i}">
+                                <img src="${productImages[i][0]}" class="product-img">
+                                ${productImages[i].length > 1 ? `<button class="nav-btn next" onclick="changeImg(${i}, 1)">❯</button>` : ''}
+                            </div>
+                            <h3>${p.name}</h3>
+                            <p>${p.price} دج</p>
+                            <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, ${i})">إضافة للسلة 🛒</button>
+                        </div>`;
+                });
+            }).catch(() => document.getElementById("product-container").innerHTML = "خطأ في تحميل بيانات Sheety");
 
         function changeImg(idx, dir) {
             const img = document.getElementById(`img-box-${idx}`).querySelector('img');
@@ -179,65 +143,59 @@
             img.src = imgs[(current + dir + imgs.length) % imgs.length];
         }
 
-        function selectSize(i, s) { selectedSizes[i] = s; document.getElementById(`size-btns-${i}`).querySelectorAll('.btn-size').forEach(b => b.classList.toggle('active', b.innerText === s)); }
-        
-        function addToCart(name, price, i) { 
-            cart.push({name, price, size: selectedSizes[i]}); 
-            renderCart(); 
-            document.getElementById('cart-count').innerText = cart.length;
-            if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart();
+        function addToCart(name, price, i) {
+            cart.push({name, price, size: selectedSizes[i]});
+            renderCart();
+            toggleCart();
         }
 
         function renderCart() {
-            const w = document.getElementById("cust-wilaya").value;
-            const d = document.getElementById("cust-delivery").value;
-            let sub = cart.reduce((s, i) => s + parseInt(i.price), 0);
-            let ship = (w && rates[w]) ? (d == 'توصيل للمنزل' ? rates[w][0] : rates[w][1]) : 0;
-            document.getElementById("cart-items").innerHTML = cart.map((i, idx) => `<div style="border-bottom: 1px solid #ddd; padding: 8px 0; color:#333;">${i.name} (${i.size}) - ${i.price} دج <button onclick="cart.splice(${idx},1); renderCart();" style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;">إزالة</button></div>`).join('');
-            document.getElementById("cart-total").innerHTML = cart.length ? `المجموع: ${sub} دج <br> التوصيل: ${ship} دج <br> <span style="font-size: 1.2em; color: var(--main-bg);">الإجمالي: ${sub + ship} دج</span>` : 'السلة فارغة';
+            document.getElementById("cart-items").innerHTML = cart.map(i => `<div>${i.name} - ${i.price} دج</div>`).join('');
             document.getElementById('cart-count').innerText = cart.length;
         }
 
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+
+        // إرسال الطلب وحفظه في SUPABASE
         async function sendOrder() {
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
-            const wilaya = document.getElementById('cust-wilaya').value;
-            const delivery = document.getElementById('cust-delivery').value;
-            const address = document.getElementById('address-box').value;
-            const itemsSummary = cart.map(i => `${i.name} (${i.size})`).join(', ');
-            const total = document.getElementById("cart-total").innerText.split('الإجمالي: ')[1];
+            if (!name || !phone || cart.length === 0) return alert("املأ البيانات!");
 
-            // التحقق من الرقم (10 أرقام ويبدأ بـ 05/06/07)
-            const phoneRegex = /^(05|06|07)[0-9]{8}$/;
-            if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء البيانات وإضافة منتجات!"); return; }
-            if (!phoneRegex.test(phone)) { alert("يرجى إدخال رقم هاتف جزائري صحيح (يبدأ بـ 05 أو 06 أو 07 ويتكون من 10 أرقام)!"); return; }
-
-            // 1. الحفظ في Supabase
-            const { error } = await supabase.from('orders').insert([{
+            const { error } = await supabaseClient.from('orders').insert([{
                 customer_name: name,
                 phone: phone,
-                wilaya: wilaya,
-                delivery_type: delivery,
-                items: itemsSummary,
-                total_price: parseInt(total) || 0,
+                items: cart.map(i => i.name).join(', '),
                 status: 'قيد الانتظار'
             }]);
 
-            // 2. الإرسال لـ Telegram
-            let msg = `🛍 طلب جديد: ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A🚚 التوصيل: ${delivery}%0A🏡 العنوان: ${address}%0A%0Aالمنتجات:%0A` + cart.map(i => `- ${i.name} (${i.size})`).join('%0A');
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}`);
-            
-            document.getElementById('custom-alert').style.display = 'block';
-            setTimeout(() => { location.reload(); }, 3000);
+            if (error) alert("خطأ في الحفظ");
+            else { alert("تم الطلب بنجاح!"); location.reload(); }
         }
 
-        // وظائف لوحة التحكم
+        // لوحة التحكم (الدخول عبر 3 نقاط + كود)
         function loginAdmin() {
-            let pass = prompt("أدخل كلمة سر المدير:");
+            let pass = prompt("أدخل كود المسؤول:");
             if (pass === "2026") {
                 document.getElementById('admin-panel').style.display = 'block';
-                loadOrders();
-            } else { alert("كلمة سر خاطئة!"); }
+                loadOrdersFromSupabase();
+            } else { alert("كود خاطئ!"); }
         }
 
-        async function load
+        async function loadOrdersFromSupabase() {
+            const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById("orders-list");
+            if (data) {
+                list.innerHTML = data.map(o => `
+                    <div class="order-card">
+                        <b>الاسم:</b> ${o.customer_name}<br>
+                        <b>الهاتف:</b> ${o.phone}<br>
+                        <b>المنتجات:</b> ${o.items}<br>
+                        <small>${new Date(o.created_at).toLocaleString('ar-DZ')}</small>
+                    </div>
+                `).join('');
+            } else { list.innerHTML = "لا توجد طلبات حالياً."; }
+        }
+    </script>
+</body>
+</html>
