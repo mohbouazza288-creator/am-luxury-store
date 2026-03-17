@@ -19,6 +19,11 @@
         .store-name { font-size: 2.8em; font-weight: bold; margin: 15px 0 10px 0; }
         .confidence-tag { font-family: 'Garamond', serif; font-size: 1.1em; font-style: italic; color: var(--main-bg); margin: 0; font-weight: 500; }
 
+        /* قسم كيف يتم الطلب */
+        .how-to-order { background: rgba(212, 180, 131, 0.1); border: 1px dashed var(--gold); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: right; }
+        .how-to-order h3 { color: var(--gold); margin-top: 0; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
+        .step { margin: 10px 0; font-size: 1.05em; display: flex; align-items: center; gap: 10px; }
+
         #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
         .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; margin-top: -1px; }
         
@@ -27,14 +32,12 @@
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; padding: 10px; font-weight: bold; border-radius: 50%; z-index: 2; }
         .prev { left: 5px; } .next { right: 5px; }
 
-        /* السلة العائمة */
-        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
-        #cart-sidebar.active { left: 0; }
-        
         /* الأزرار العائمة */
         .cart-icon-btn { position: fixed; bottom: 100px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
         .whatsapp-float { position: fixed; bottom: 30px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; text-decoration: none; }
         
+        #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
+        #cart-sidebar.active { left: 0; }
         #cart-count { font-size: 0.7em; background: red; color: white; border-radius: 50%; padding: 2px 7px; position: absolute; top: 5px; right: 5px; font-weight: bold; }
         .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; float: left; }
 
@@ -62,7 +65,7 @@
         </div>
     </div>
 
-    <a href="https://wa.me/213775309572" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/213776067476" class="whatsapp-float" target="_blank" title="خدمة العملاء">
         <svg style="width:35px;height:35px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.3a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.95 3.11c-.24 0-.45.09-.64.31-.21.24-.8.78-.8 1.91s.84 2.22.94 2.37c.1.15 1.62 2.48 3.93 3.48.55.24.98.39 1.32.5.55.18 1.05.15 1.45.09.43-.06 1.33-.54 1.52-1.07.19-.51.19-.96.13-1.07-.06-.1-.21-.18-.45-.31-.24-.12-1.45-.71-1.67-.8-.22-.09-.39-.12-.55.13-.15.24-.61.78-.74.93-.13.15-.27.18-.51.06-.24-.12-1.01-.38-1.92-1.2-.72-.63-1.2-1.41-1.34-1.65-.13-.24-.01-.36.1-.48.11-.11.24-.27.36-.4.12-.15.15-.24.23-.4s.04-.31-.01-.43c-.07-.12-.55-1.33-.76-1.83-.2-.51-.4-.44-.55-.45h-.45Z"/></svg>
     </a>
 
@@ -96,11 +99,20 @@
     </div>
 
     <div class="wrapper">
+        <div class="how-to-order">
+            <h3>كيف يتم الطلب؟</h3>
+            <div class="step">1️⃣ <span>اختر المنتج المفضل لديك.</span></div>
+            <div class="step">2️⃣ <span>املأ معلومات الطلب (الاسم، الهاتف، الولاية).</span></div>
+            <div class="step">3️⃣ <span>سنتصل بك هاتفياً لتأكيد الطلب قبل الإرسال.</span></div>
+            <div class="step">4️⃣ <span>التوصيل سريع والدفع يكون عند الاستلام.</span></div>
+        </div>
+
         <div id="product-container">جاري تحميل المنتجات...</div>
     </div>
 
     <footer class="main-footer">
         <div class="footer-social-links">
+            <a href="https://wa.me/213776067476" target="_blank">📞 خدمة العملاء - اتصل بنا</a>
             <a href="https://www.tiktok.com/@am.luxury20" target="_blank">تيك توك - TikTok</a>
             <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك - Facebook</a>
             <a href="https://www.instagram.com/am_luxury.20" target="_blank">إنستغرام - Instagram</a>
