@@ -35,7 +35,7 @@
         .confirm-btn { background: var(--main-bg); color: var(--gold); border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
 
         .admin-table-container { background: white; color: #333; padding: 15px; border-radius: 10px; overflow-x: auto; }
-        .admin-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        .admin-table { width: 100%; border-collapse: collapse; min-width: 1000px; }
         .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.85em; }
         .status-select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; cursor: pointer; }
         .del-btn { background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; }
@@ -94,7 +94,7 @@
         <h2 style="color:var(--gold);">📦 سجل الطلبات</h2>
         <div class="admin-table-container">
             <table class="admin-table">
-                <thead><tr><th>الزبون</th><th>الهاتف</th><th>الولاية</th><th>توصيل</th><th>الطلبية</th><th>الحالة</th><th>التاريخ</th><th>حذف</th></tr></thead>
+                <thead><tr><th>الزبون</th><th>الهاتف</th><th>الولاية</th><th>توصيل</th><th>المجموع</th><th>الطلبية</th><th>الحالة</th><th>التاريخ</th><th>حذف</th></tr></thead>
                 <tbody id="orders-rows"></tbody>
             </table>
         </div>
@@ -201,30 +201,60 @@
             if (!name || phone.length < 10 || !wilaya || cart.length === 0) return alert("أكمل البيانات!");
             const itemsTxt = cart.map(i => `${i.name} (${i.size})`).join(', ');
             const shipCost = rates[wilaya][delivery === 'توصيل للمنزل' ? 0 : 1];
+            const subTotal = cart.reduce((s, i) => s + parseInt(i.price), 0);
+            const total = subTotal + shipCost;
 
-            await supabaseClient.from('orders').insert([{ customer_name: name, phone, wilaya, items: itemsTxt, status: 'جديد', shipping_cost: shipCost }]);
+            const { error } = await supabaseClient.from('orders').insert([{ 
+                customer_name: name, 
+                phone: phone, 
+                wilaya: wilaya, 
+                items: itemsTxt, 
+                status: 'جديد', 
+                shipping_cost: shipCost, 
+                total_price: total 
+            }]);
             
-            const msg = `🛍 طلب جديد: ${name}\n📱 هاتف: ${phone}\n📍 ولاية: ${wilaya}\n🚚 توصيل: ${shipCost} دج\n📦 طلب: ${itemsTxt}`;
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
-            
-            showAlert("✨ تم الطلب بنجاح!"); setTimeout(() => location.reload(), 2000);
+            if (error) {
+                alert("فشل إرسال الطلب، تأكد من إعدادات Supabase");
+            } else {
+                const msg = `🛍 طلب جديد: ${name}\n📱 هاتف: ${phone}\n📍 ولاية: ${wilaya}\n🚚 توصيل: ${shipCost} دج\n💰 المجموع: ${total} دج\n📦 طلب: ${itemsTxt}`;
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
+                showAlert("✨ تم الطلب بنجاح!"); 
+                setTimeout(() => location.reload(), 2000);
+            }
         }
 
         async function updateStatus(id, newStatus) {
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
-            if (!error) { showAlert("✅ تم تثبيت الحالة"); loadOrders(); }
+            if (!error) { 
+                showAlert("✅ تم تثبيت الحالة"); 
+                loadOrders(); 
+            } else {
+                alert("حدث خطأ أثناء التحديث");
+            }
         }
 
         async function deleteOrder(id) {
             if(confirm("هل أنت متأكد من حذف هذه الطلبية؟")) {
                 const { error } = await supabaseClient.from('orders').delete().eq('id', id);
-                if (!error) { showAlert("🗑️ تم الحذف"); loadOrders(); }
+                if (!error) { 
+                    showAlert("🗑️ تم الحذف"); 
+                    loadOrders(); 
+                } else {
+                    alert("تعذر الحذف، قد يكون هناك خطأ في الاتصال");
+                }
             }
         }
 
         async function loadOrders() {
-            const rows = document.getElementById('orders-rows'); rows.innerHTML = "<tr><td colspan='8'>جاري التحميل...</td></tr>";
-            const { data } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+            const rows = document.getElementById('orders-rows'); 
+            rows.innerHTML = "<tr><td colspan='9'>جاري التحميل...</td></tr>";
+            const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+
+            if (error) {
+                rows.innerHTML = "<tr><td colspan='9'>خطأ في تحميل البيانات</td></tr>";
+                return;
+            }
 
             if (data) {
                 rows.innerHTML = data.map(o => `
@@ -233,6 +263,7 @@
                         <td>${o.phone}</td>
                         <td>${o.wilaya}</td>
                         <td>${o.shipping_cost || 0} دج</td>
+                        <td style="font-weight:bold; color:green;">${o.total_price || 0} دج</td>
                         <td style="font-size:0.75em;">${o.items}</td>
                         <td>
                             <select class="status-select" onchange="updateStatus(${o.id}, this.value)" style="background:${o.status==='تم التأكيد'?'#d4edda':o.status==='جديد'?'#fff3cd':o.status==='مرفوض'?'#f8d7da':'#cce5ff'}">
