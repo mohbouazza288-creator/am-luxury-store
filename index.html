@@ -52,38 +52,41 @@
         .store-name { font-size: 2em; margin: 0; font-weight: bold; color: var(--main-bg); }
         .store-slogan { font-size: 1em; margin: 5px 0 0 0; color: #555; font-style: italic; }
 
+        /* زر السلة العائم المطور */
         .floating-controls {
             position: fixed;
             bottom: 20px;
-            left: 20px;
+            left: 20px; 
             z-index: 5000;
         }
         .floating-btn {
             background: var(--gold);
             color: var(--main-bg);
-            border: 2px solid var(--main-bg);
-            width: 60px;
-            height: 60px;
+            border: 2px solid var(--white);
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 22px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            font-size: 26px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            transition: transform 0.2s;
         }
+        .floating-btn:active { transform: scale(0.9); }
         .cart-count-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
+            top: -2px;
+            right: -2px;
+            background: #ff0000;
             color: white;
-            font-size: 12px;
-            padding: 2px 6px;
+            font-size: 13px;
+            padding: 3px 7px;
             border-radius: 50%;
             font-family: Arial, sans-serif;
+            border: 1px solid white;
         }
 
         .whatsapp-float {
@@ -92,17 +95,18 @@
             right: 20px;
             background-color: var(--whatsapp-green);
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            font-size: 35px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             z-index: 5000;
             display: flex;
             justify-content: center;
             align-items: center;
             text-decoration: none;
+            border: 2px solid white;
         }
 
         #product-container {
@@ -134,9 +138,8 @@
             cursor: zoom-in;
         }
         .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-        .img-container:hover .product-img { transform: scale(1.05); }
 
-        /* نافذة الزوم المتقدمة */
+        /* نافذة الزوم المطورة */
         #zoom-modal {
             display: none;
             position: fixed;
@@ -147,26 +150,22 @@
             align-items: center;
             touch-action: none;
         }
-        #zoomed-img {
-            max-width: 90%;
-            max-height: 80%;
-            border: 2px solid var(--gold);
-            border-radius: 10px;
-            transition: transform 0.2s ease;
+        #zoomed-img { 
+            max-width: 95%; 
+            max-height: 90%; 
+            border-radius: 10px; 
+            border: 2px solid var(--gold); 
+            transition: transform 0.1s ease-out;
         }
         .close-zoom {
             position: absolute;
             top: 20px;
             right: 20px;
             color: white;
-            font-size: 35px;
+            font-size: 40px;
+            font-weight: bold;
             cursor: pointer;
             z-index: 20001;
-            background: rgba(255,255,255,0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            line-height: 45px;
         }
 
         .footer {
@@ -223,7 +222,7 @@
     </div>
 
     <a href="https://wa.me/213775309572" class="whatsapp-float" target="_blank">
-        <svg style="width:35px;height:35px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42 1.56 1.56 2.41 3.63 2.41 5.82 0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.3a8.132 8.132 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.75c-.19 0-.52.07-.79.37-.27.3-.87.86-.87 2.1s.9 2.44 1.03 2.62c.13.19 1.77 2.7 4.29 3.79 1.14.49 1.9.65 2.56.76.69.11 1.32.08 1.81.01.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.27.17-1.38-.07-.11-.26-.18-.56-.33s-1.72-.85-1.99-.95c-.26-.09-.45-.14-.64.14-.19.28-.73.93-.9 1.12-.17.19-.34.21-.64.06-.3-.15-1.27-.47-2.42-1.49-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.34.45-.51.15-.17.2-.29.3-.49s.05-.37-.02-.52c-.07-.15-.64-1.54-.87-2.11-.23-.55-.47-.48-.64-.48Z"/></svg>
+        <svg style="width:38px;height:38px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42 1.56 1.56 2.41 3.63 2.41 5.82 0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.3a8.132 8.132 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.75c-.19 0-.52.07-.79.37-.27.3-.87.86-.87 2.1s.9 2.44 1.03 2.62c.13.19 1.77 2.7 4.29 3.79 1.14.49 1.9.65 2.56.76.69.11 1.32.08 1.81.01.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.27.17-1.38-.07-.11-.26-.18-.56-.33s-1.72-.85-1.99-.95c-.26-.09-.45-.14-.64.14-.19.28-.73.93-.9 1.12-.17.19-.34.21-.64.06-.3-.15-1.27-.47-2.42-1.49-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.34.45-.51.15-.17.2-.29.3-.49s.05-.37-.02-.52c-.07-.15-.64-1.54-.87-2.11-.23-.55-.47-.48-.64-.48Z"/></svg>
     </a>
 
     <div class="floating-controls">
@@ -234,7 +233,7 @@
     </div>
 
     <div id="zoom-modal">
-        <span class="close-zoom" onclick="closeZoom()">×</span>
+        <span class="close-zoom" onclick="closeZoom()">&times;</span>
         <img id="zoomed-img" src="">
     </div>
 
@@ -308,17 +307,27 @@
 
         function togglePage(id, show) { document.getElementById(id).style.display = show ? 'block' : 'none'; }
 
-        // خاصية الزوم المتقدمة
+        // خاصية الزوم المطورة باللمس
         function openZoom(src) {
             const modal = document.getElementById('zoom-modal');
             const img = document.getElementById('zoomed-img');
             img.src = src;
+            img.style.transform = 'scale(1)';
             modal.style.display = 'flex';
         }
 
         function closeZoom() {
             document.getElementById('zoom-modal').style.display = 'none';
         }
+
+        // إضافة زوم عبر اللمس Pinch-to-zoom
+        let zoomLevel = 1;
+        document.getElementById('zoom-modal').addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoomLevel += e.deltaY * -0.001;
+            zoomLevel = Math.min(Math.max(.5, zoomLevel), 4);
+            document.getElementById('zoomed-img').style.transform = `scale(${zoomLevel})`;
+        });
 
         const wSelect = document.getElementById("cust-wilaya");
         Object.keys(rates).forEach(w => { let o = document.createElement("option"); o.value = w; o.innerHTML = w; wSelect.appendChild(o); });
@@ -350,7 +359,9 @@
         function changeImg(idx, dir) {
             const img = document.getElementById(`img-box-${idx}`).querySelector('img');
             let imgs = productImages[idx];
-            let next = (imgs.indexOf(img.src) + dir + imgs.length) % imgs.length;
+            let currentIdx = imgs.indexOf(img.src);
+            if (currentIdx === -1) currentIdx = 0;
+            let next = (currentIdx + dir + imgs.length) % imgs.length;
             img.src = imgs[next];
         }
 
@@ -384,10 +395,4 @@
         }
 
         function sendOrder() {
-            const name = document.getElementById('cust-name').value;
-            const phone = document.getElementById('cust-phone').value;
-            const wilaya = document.getElementById('cust-wilaya').value;
-            const delivery = document.getElementById('cust-delivery').value;
-            if (!name || phone.length < 10 || !wilaya || cart.length === 0) { alert("أكمل جميع البيانات المطلوبة!"); return; }
-            
-            let msg = `🌟 *طلب جديد من AM Luxury*%0A%0A👤 *الزبون:* ${name}%0A📱 *الهاتف:* ${phone}%0A📍 *الولاية:* ${wilaya}%0A🚚 *
+            const name = document.
