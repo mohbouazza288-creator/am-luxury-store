@@ -12,15 +12,23 @@
         .announcement-text { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .header-section { background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-bottom: 2px solid var(--gold); }
-        .store-logo { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
+        /* تعديلات الـ Header واللوغو */
+        .header-section { background: var(--accent); color: var(--main-bg); padding: 50px 20px; border-bottom: 2px solid var(--gold); }
+        .store-logo { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; transition: transform 0.4s ease; cursor: pointer; }
+        .store-logo:hover { transform: scale(1.15); } /* زوم للوغو */
+        .header-section h1 { font-size: 2.2em; margin: 15px 0 5px 0; font-weight: 800; letter-spacing: 1px; }
+        .luxury-bio { color: #555; font-style: italic; font-size: 0.95em; max-width: 320px; margin: 0 auto; line-height: 1.4; }
 
         .page { display: none; padding: 20px; min-height: 60vh; }
         .page.active { display: block; }
 
         .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 15px; margin: 20px auto; max-width: 400px; border: 2px solid var(--gold); text-align: right; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .img-container { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); background: #fff; }
-        .product-img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; transition: transform 0.3s; }
+        
+        /* تأثير الزوم على الصور */
+        .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; cursor: zoom-in; }
+        .product-img:hover { transform: scale(1.4); }
+
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; z-index: 10; }
 
         .size-container { margin: 15px 0; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -32,20 +40,42 @@
         .confirm-btn { background: #25D366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 1.1em; margin-top: 10px; }
 
         #floating-cart { position: fixed; bottom: 20px; left: 20px; background: var(--gold); color: var(--main-bg); border: none; padding: 15px 25px; border-radius: 50px; font-weight: bold; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; display: none; }
+        
+        /* تصميم الـ Footer الجديد */
+        footer { background: var(--accent); color: var(--main-bg); padding: 30px 20px; border-top: 3px solid var(--gold); margin-top: 40px; }
+        .footer-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; text-align: right; font-size: 0.9em; }
+        .footer-item { background: rgba(255,255,255,0.5); padding: 10px; border-radius: 8px; }
+        .contact-links { border-top: 1px solid #ccc; padding-top: 20px; }
+        .contact-links a { display: block; color: var(--main-bg); text-decoration: none; margin: 8px 0; font-weight: bold; font-size: 1.05em; }
+        .contact-links span { color: #d32f2f; }
+
         #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10005; width: 80%; max-width: 300px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="announcement-bar"><div class="announcement-text">🚛 توصيل سريع لـ 58 ولاية | 🤝 الدفع عند الاستلام | ✨ AM Luxury</div></div>
+    <div class="announcement-bar"><div class="announcement-text">🚛 توصيل سريع لـ 58 ولاية مع شركة Noest Express | 🤝 الدفع عند الاستلام | ✨ AM Luxury</div></div>
 
     <div id="shop-page" class="page active">
         <div class="header-section">
-            <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="store-logo">
+            <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="store-logo" alt="Logo">
             <h1>AM Luxury</h1>
-            <p>الفخامة الجزائرية الأصلية</p>
+            <p class="luxury-bio">The quintessence of Algerian elegance and sophistication. Experience the ultimate expression of luxury and timeless craftsmanship in every piece.</p>
         </div>
         <div id="product-container">جاري تحميل المنتجات...</div>
+        
+        <footer>
+            <div class="footer-info">
+                <div class="footer-item">🤝 الدفع عند الاستلام</div>
+                <div class="footer-item">⚡ توصيل سريع (Noest)</div>
+            </div>
+            <div class="contact-links">
+                <a href="tel:0776037476">📞 خدمة العملاء: 0776037476</a>
+                <a href="https://wa.me/213775309572" target="_blank">💬 واتساب: 0775 30 95 72</a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.8em; opacity: 0.7;">© 2026 AM Luxury. All Rights Reserved.</p>
+        </footer>
+
         <button id="floating-cart" onclick="showPage('cart-page')">🛒 السلة (<span id="cart-count">0</span>)</button>
     </div>
 
@@ -75,7 +105,7 @@
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
 
         const rates = { 
-            "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 bومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500]
+            "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500]
         };
 
         const wSelect = document.getElementById("cust-wilaya");
