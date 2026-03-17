@@ -8,24 +8,19 @@
         :root { --main-bg: #0A2626; --accent: #F5E6CC; --gold: #D4B483; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--main-bg); color: #fff; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* ضبط الحاوية لتناسب الهواتف وتكامل التصميم */
+        /* شريط الإعلان العلوي */
+        .announcement-bar { background: var(--gold); color: var(--main-bg); padding: 10px 0; font-size: 0.9em; font-weight: bold; position: sticky; top: 0; z-index: 10002; border-bottom: 1px solid var(--main-bg); overflow: hidden; }
+        .announcement-text { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
         .wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
-        
-        /* الهيدر الجديد: أطول، بدون حواف سفلية دائرية، وبدون إطار سفلي للتكامل */
         .header-section { background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-radius: 0; border: 2px solid var(--gold); border-bottom: none; margin-bottom: 0; box-sizing: border-box; }
-        
-        /* تكبير اللوغو */
         .store-logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); }
         .store-name { font-size: 2.8em; font-weight: bold; margin: 15px 0 10px 0; }
-        
-        /* عبارة الثقة بالإنجليزية */
         .confidence-tag { font-family: 'Garamond', serif; font-size: 1.1em; font-style: italic; color: var(--main-bg); margin: 0; font-weight: 500; }
 
-        /* تنسيق شبكة المنتجات */
         #product-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
-        
-        /* بطاقة المنتج: ربطها بالهيدر عبر إزالة الهامش العلوي وتغيير الحواف الدائرية */
-        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; margin-top: -1px; /* يضمن تداخل الإطارات */ }
+        .product-card { background: var(--accent); color: var(--main-bg); padding: 15px; border-radius: 0 0 15px 15px; width: 100%; border: 2px solid var(--gold); border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; margin-top: -1px; }
         
         .img-container { position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 10px; border: 1px solid var(--gold); }
         .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
@@ -35,7 +30,11 @@
         /* السلة العائمة */
         #cart-sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--accent); color: var(--main-bg); z-index: 10000; transition: 0.4s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: 20px; text-align: right; overflow-y: auto; box-sizing: border-box; }
         #cart-sidebar.active { left: 0; }
-        .cart-icon-btn { position: fixed; bottom: 30px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
+        
+        /* الأزرار العائمة */
+        .cart-icon-btn { position: fixed; bottom: 100px; right: 20px; background: var(--gold); color: var(--main-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; }
+        .whatsapp-float { position: fixed; bottom: 30px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid #fff; text-decoration: none; }
+        
         #cart-count { font-size: 0.7em; background: red; color: white; border-radius: 50%; padding: 2px 7px; position: absolute; top: 5px; right: 5px; font-weight: bold; }
         .close-cart { background: var(--main-bg); color: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; float: left; }
 
@@ -44,15 +43,28 @@
         .btn-size { margin: 3px; border: 1px solid var(--gold); padding: 8px 14px; cursor: pointer; border-radius: 5px; background: #fff; }
         .btn-size.active { background: var(--main-bg); color: var(--gold); }
 
-        /* نص التوصيل والتذييل */
-        .footer-info { margin-top: 30px; padding: 20px; background: rgba(245, 230, 204, 0.05); border-radius: 15px; border-top: 1px solid var(--gold); }
-        .shipping-note { color: var(--gold); font-size: 0.95em; margin-top: 15px; line-height: 1.6; }
-        .social-links a { color: var(--accent); text-decoration: none; margin: 0 8px; font-weight: bold; }
+        /* تذييل الصفحة المطور */
+        .main-footer { margin-top: 50px; background: var(--accent); color: var(--main-bg); padding: 40px 20px; border-top: 3px solid var(--gold); }
+        .footer-social-links { display: flex; flex-direction: column; gap: 15px; align-items: center; margin-bottom: 30px; }
+        .footer-social-links a { color: var(--main-bg); text-decoration: none; font-weight: bold; font-size: 1.2em; border-bottom: 1px solid var(--gold); padding-bottom: 5px; width: fit-content; }
+        .footer-shipping-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 20px; border-top: 1px solid var(--gold); text-align: right; }
+        .info-card h4 { margin: 0 0 10px 0; font-size: 1.1em; color: var(--main-bg); }
+        .info-card p { margin: 0; font-size: 0.9em; line-height: 1.5; opacity: 0.9; }
 
         #custom-alert { display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--main-bg); padding: 25px; border-radius: 15px; border: 3px solid var(--gold); z-index: 10001; text-align: center; width: 85%; max-width: 320px; box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
+
+    <div class="announcement-bar">
+        <div class="announcement-text">
+             🚛 توصيل سريع لـ 58 ولاية | 🤝 الدفع عند الاستلام | 🔍 ضمان حق تفقد المنتج قبل الدفع | ✨ AM Luxury تضمن لكم الأفضل
+        </div>
+    </div>
+
+    <a href="https://wa.me/213775309572" class="whatsapp-float" target="_blank">
+        <svg style="width:35px;height:35px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.19-.3a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.95 3.11c-.24 0-.45.09-.64.31-.21.24-.8.78-.8 1.91s.84 2.22.94 2.37c.1.15 1.62 2.48 3.93 3.48.55.24.98.39 1.32.5.55.18 1.05.15 1.45.09.43-.06 1.33-.54 1.52-1.07.19-.51.19-.96.13-1.07-.06-.1-.21-.18-.45-.31-.24-.12-1.45-.71-1.67-.8-.22-.09-.39-.12-.55.13-.15.24-.61.78-.74.93-.13.15-.27.18-.51.06-.24-.12-1.01-.38-1.92-1.2-.72-.63-1.2-1.41-1.34-1.65-.13-.24-.01-.36.1-.48.11-.11.24-.27.36-.4.12-.15.15-.24.23-.4s.04-.31-.01-.43c-.07-.12-.55-1.33-.76-1.83-.2-.51-.4-.44-.55-.45h-.45Z"/></svg>
+    </a>
 
     <div class="cart-icon-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
 
@@ -62,9 +74,7 @@
         <div id="cart-items"></div>
         <div id="cart-total" style="margin: 20px 0; font-weight: bold; border-top: 1px solid var(--gold); padding-top: 10px;"></div>
         <input type="text" id="cust-name" placeholder="الاسم الكامل">
-        
         <input type="tel" id="cust-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-        
         <select id="cust-wilaya" onchange="renderCart()"><option value="">اختر الولاية...</option></select>
         <select id="cust-delivery" onchange="renderCart(); document.getElementById('address-box').style.display=(this.value=='توصيل للمنزل'?'block':'none')">
             <option value="استلام من المكتب">استلام من المكتب</option>
@@ -87,21 +97,27 @@
 
     <div class="wrapper">
         <div id="product-container">جاري تحميل المنتجات...</div>
+    </div>
 
-        <div class="footer-info">
-            <div class="social-links">
-                <a href="https://www.tiktok.com/@am.luxury20" target="_blank">تيك توك</a> | 
-                <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك</a> | 
-                <a href="https://www.instagram.com/am_luxury.20" target="_blank">إنستغرام</a>
+    <footer class="main-footer">
+        <div class="footer-social-links">
+            <a href="https://www.tiktok.com/@am.luxury20" target="_blank">تيك توك - TikTok</a>
+            <a href="https://www.facebook.com/profile.php?id=61587041911934" target="_blank">فيسبوك - Facebook</a>
+            <a href="https://www.instagram.com/am_luxury.20" target="_blank">إنستغرام - Instagram</a>
+        </div>
+        
+        <div class="footer-shipping-info">
+            <div class="info-card">
+                <h4>💳 طريقة الدفع</h4>
+                <p>الدفع نقداً عند الاستلام بعد تفقد المنتج.</p>
             </div>
-            
-            <div class="shipping-note">
-                <p>🚛 نحن نعمل مع شركة <strong>Noest Express</strong> لضمان وصول طلباتكم بسرعة.</p>
-                <p>التوصيل متوفر لـ <strong>58 ولاية</strong> | الدفع عند الاستلام ✅</p>
-                <p>سرعة في التوصيل: <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
+            <div class="info-card">
+                <h4>📦 التوصيل</h4>
+                <p>عبر Noest Express لـ 58 ولاية (24-48 ساعة).</p>
             </div>
         </div>
-    </div>
+        <p style="margin-top: 30px; font-size: 0.8em; opacity: 0.6;">© 2026 AM Luxury. جميع الحقوق محفوظة.</p>
+    </footer>
 
     <script>
         const API_SHEETY = "https://api.sheety.co/f07bc4c4911bc49dacebf60eaa258f01/feuilleDeCalculSansTitre/feuille1";
@@ -172,7 +188,6 @@
             const delivery = document.getElementById('cust-delivery').value;
             const address = document.getElementById('address-box').value;
             
-            // التحقق من طول الرقم عند التأكيد
             if (!name || !phone || !wilaya || cart.length === 0) { alert("يرجى ملء البيانات وإضافة منتجات!"); return; }
             if (phone.length < 10) { alert("يرجى إدخال رقم هاتف صحيح (10 أرقام)!"); return; }
 
