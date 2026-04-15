@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم AM Luxury</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --main-bg: #0A2626; --accent: #F5E6CC; --gold: #D4B483; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--main-bg); color: #fff; margin: 0; padding: 20px; text-align: right; }
+        .container { max-width: 1000px; margin: auto; }
+        h1, h2 { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
+        
+        /* ستايل الكروت والبطاقات */
+        .admin-card { background: var(--accent); color: var(--main-bg); padding: 20px; border-radius: 15px; border: 2px solid var(--gold); margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--gold); box-sizing: border-box; font-size: 16px; }
+        button { background: var(--main-bg); color: var(--gold); border: 2px solid var(--gold); padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1em; transition: 0.3s; }
+        button:hover { background: var(--gold); color: var(--main-bg); }
+
+        /* ستايل جدول الطلبات */
+        .table-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; background: var(--white); color: #333; border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; border: 1px solid #ddd; text-align: center; }
+        th { background: var(--gold); color: var(--main-bg); }
+        
+        .status-badge { padding: 5px 10px; border-radius: 5px; font-size: 0.85em; font-weight: bold; }
+        .pending { background: #ffeeba; color: #856404; }
+        .shipped { background: #d4edda; color: #155724; }
+
+        .refresh-btn { background: #28a745; color: white; border: none; width: auto; padding: 10px 20px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>👑 لوحة تحكم AM Luxury</h1>
+
+    <div class="admin-card">
+        <h2>➕ إضافة منتج جديد للمتجر</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <input type="text" id="p-name" placeholder="اسم المنتج (Polo Luxury Red)">
+            <input type="number" id="p-price" placeholder="السعر (دج)">
+        </div>
+        <input type="text" id="p-sizes" placeholder="المقاسات المتاحة (S, M, L, XL)">
+        <p style="font-size: 0.8em; margin-top: 10px; color: #555;">* ضع روابط الصور المرفوعة على Supabase أو أي موقع رفع:</p>
+        <input type="text" id="p-img1" placeholder="رابط الصورة الأساسية">
+        <input type="text" id="p-img2" placeholder="رابط الصورة الثانية (اختياري)">
+        <input type="text" id="p-img3" placeholder="رابط الصورة الثالثة (اختياري)">
+        <button onclick="addProduct()">إضافة المنتج الآن 🚀</button>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>📦 إدارة الطلبات الواردة</h2>
+        <button class="refresh-btn" onclick="fetchOrders()">تحديث القائمة 🔄</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>تاريخ الطلب</th>
+                    <th>الزبون</th>
+                    <th>الهاتف</th>
+                    <th>الولاية</th>
+                    <th>المنتج المطلوب</th>
+                    <th>السعر الإجمالي</th>
+                    <th>الحالة</th>
+                    <th>إجراء</th>
+                </tr>
+            </thead>
+            <tbody id="orders-list">
+                <tr><td colspan="8">جاري جلب الطلبات...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // إعدادات Supabase الخاصة بك
+    const SUPABASE_URL = 'https://itwcwscjuqqagxrnzpwx.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0d2N3c2NqdXFxYWd4cm56cHd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTEwMTYsImV4cCI6MjA4ODc2NzAxNn0.VTXn9HijD6DzAULEgVKma-ktbTvjDgiFQT2dqQO6ZgY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // دالة لإضافة منتج جديد
+    async function addProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const sizes = document.getElementById('p-sizes').value || "S, M, L, XL";
+        const img1 = document.getElementById('p-img1').value;
+        const img2 = document.getElementById('p-img2').value;
+        const img3 = document.getElementById('p-img3').value;
+
+        if(!name || !price || !img1) {
+            alert("يرجى ملء البيانات الأساسية: الاسم، السعر، والصورة 1");
+            return;
+        }
+
+        const { data, error } = await supabase.from('products').insert([
+            { name, price, sizes, image1: img1, image2: img2, image3: img3 }
+        ]);
+
+        if (error) {
+            alert("حدث خطأ: " + error.message);
+        } else {
+            alert("✅ تم إضافة المنتج بنجاح!");
+            location.reload();
+        }
+    }
+
+    // دالة لجلب الطلبات وعرضها
+    async function fetchOrders() {
+        const { data: orders, error } = await supabase
+            .from('orders')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        const list = document.getElementById('orders-list');
+        if (orders.length === 0) {
+            list.innerHTML = '<tr><td colspan="8">لا يوجد طلبات حالياً</td></tr>';
+            return;
+        }
+
+        list.innerHTML = orders.map(o => `
+            <tr>
+                <td>${new Date(o.created_at).toLocaleDateString('ar-DZ')}</td>
+                <td>${o.customer_name}</td>
+                <td><a href="tel:${o.phone}">${o.phone}</a></td>
+                <td>${o.wilaya}</td>
+                <td>${o.product_name}</td>
+                <td>${o.total_price}</td>
+                <td><span class="status-badge ${o.status === 'قيد الانتظار' ? 'pending' : 'shipped'}">${o.status}</span></td>
+                <td>
+                    ${o.status === 'قيد الانتظار' ? `<button style="padding:5px; font-size:0.8em;" onclick="updateStatus('${o.id}')">تم التوصيل</button>` : '✔️'}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // دالة لتحديث حالة الطلب
+    async function updateStatus(id) {
+        const { error } = await supabase
+            .from('orders')
+            .update({ status: 'تم التوصيل' })
+            .eq('id', id);
+
+        if (error) alert("خطأ في التحديث");
+        else fetchOrders();
+    }
+
+    // تشغيل جلب الطلبات عند فتح الصفحة
+    fetchOrders();
+</script>
+
+</body>
+</html>
+
