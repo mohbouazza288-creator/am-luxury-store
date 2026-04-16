@@ -62,7 +62,7 @@
 
     <div id="shop-page" class="page active">
         <div class="header-section">
-            <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="store-logo" onclick="location.reload()">
+            <img src="https://iafevewyaewiujdxipil.supabase.co/storage/v1/object/public/assets/bzam.png" class="store-logo" onclick="goToAdmin()">
             <h1>AM Luxury</h1>
             <p class="luxury-bio">The quintessence of Algerian elegance and sophistication.</p>
         </div>
@@ -101,13 +101,22 @@
     <div id="custom-alert"><p id="alert-msg"></p></div>
 
     <script>
-        // إعدادات Supabase الخاصة بك
         const SUPABASE_URL = 'https://itwcwscjuqqagxrnzpwx.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0d2N3c2NqdXFxYWd4cm56cHd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTEwMTYsImV4cCI6MjA4ODc2NzAxNn0.VTXn9HijD6DzAULEgVKma-ktbTvjDgiFQT2dqQO6ZgY';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const BOT_TOKEN = "8753134519:AAEaqgsaa8kZat3v1pYyNqlfMnZ1JUU0tDM";
         const CHAT_ID = "8332065634";
+
+        // دالة الدخول للأدمن بكود
+        function goToAdmin() {
+            let pass = prompt("أدخل كود الدخول للأدمن:");
+            if(pass === "moh123") {
+                window.location.href = "admin.html";
+            } else {
+                alert("كود خاطئ!");
+            }
+        }
 
         const rates = { 
             "01 أدرار": [1500, 1000], "02 الشلف": [750, 450], "03 الأغواط": [1000, 600], "04 أم البواقي": [900, 600], "05 باتنة": [900, 600], "06 بجاية": [800, 500], "07 بسكرة": [1100, 700], "08 بشار": [1200, 800], "09 البليدة": [750, 450], "10 البويرة": [800, 500], "11 تمنراست": [2000, 1500], "12 تبسة": [900, 600], "13 تلمسان": [800, 500], "14 تيارت": [800, 500], "15 تيزي وزو": [800, 500], "16 الجزائر": [700, 450], "17 الجلفة": [1000, 600], "18 جيجل": [900, 600], "19 سطيف": [900, 600], "20 سعيدة": [500, 300], "21 سكيكدة": [900, 600], "22 سيدي بلعباس": [650, 400], "23 عنابة": [900, 600], "24 قالمة": [900, 600], "25 قسنطينة": [900, 600], "26 المدية": [900, 600], "27 مستغانم": [800, 500], "28 المسيلة": [900, 600], "29 معسكر": [600, 400], "30 ورقلة": [1000, 600], "31 وهران": [700, 450], "32 البيض": [1200, 800], "33 إليزي": [1900, 1500], "34 برج بوعريريج": [900, 600], "35 بومرداس": [750, 450], "36 الطارف": [900, 600], "37 تندوف": [1700, 1000], "38 تيسمسيلت": [900, 600], "39 الوادي": [1000, 600], "40 خنشلة": [900, 600], "41 سوق أهراس": [900, 600], "42 تيبازة": [750, 450], "43 ميلة": [900, 600], "44 عين الدفلى": [800, 500], "45 النعامة": [1200, 800], "46 عين تموشنت": [800, 500], "47 غرداية": [1000, 600], "48 غليزان": [700, 450], "49 أولاد جلال": [1100, 700], "50 بني عباس": [1200, 800], "51 إن صالح": [1800, 1200], "52 إن قزام": [2200, 1800], "53 تقرت": [1000, 600], "54 جانت": [2200, 1800], "55 المغير": [1000, 600], "56 المنيعة": [1000, 600], "58 برج باجي مختار": [2000, 1500]
@@ -127,7 +136,6 @@
         function openModal(src, e) { e.stopPropagation(); document.getElementById('modal-img').src = src; document.getElementById('img-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('img-modal').style.display = 'none'; }
 
-        // جلب المنتجات ديناميكياً من Supabase
         async function loadProducts() {
             const container = document.getElementById("product-container");
             const { data: products, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
@@ -202,7 +210,6 @@
 
             if (!name || phone.length < 10 || !wilaya) { alert("يرجى ملء جميع البيانات!"); return; }
 
-            // 1. تخزين في Supabase
             const { error: dbError } = await supabase.from('orders').insert([{
                 customer_name: name,
                 phone: phone,
@@ -215,8 +222,7 @@
 
             if (dbError) { alert("خطأ في تسجيل الطلب."); return; }
 
-            // 2. إرسال لتليغرام
-            const msg = `🔔 *طلب جديد* %0A👤 الاسم: ${name} %0A📱 الهاتف: ${phone} %0A📍 الولاية: ${wilaya} %0A📦 المنتج: ${cart[0].name} (${cart[0].size}) %0A💰 السعر: ${finalPriceText}`;
+            const msg = `🔔 *طلب جديد من AM Luxury*%0A👤 الاسم: ${name}%0A📱 الهاتف: ${phone}%0A📍 الولاية: ${wilaya}%0A📦 المنتج: ${cart[0].name} (${cart[0].size})%0A🚚 النوع: ${delivery}%0A💰 السعر: ${finalPriceText}`;
             
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${msg}&parse_mode=Markdown`);
